@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/cgt_fl_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white" >
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_dddddd" />
+
+    <RadioGroup
+        android:id="@+id/cgt_rg_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/cgt_rb_weixin"
+            style="@style/cgt_tabbar"
+            android:drawableTop="@drawable/cgt_selector_tabbar_weixin_bg"
+            android:text="@string/cgt_tabbar_weixin" />
+
+        <RadioButton
+            android:id="@+id/cgt_rb_addressbook"
+            style="@style/cgt_tabbar"
+            android:drawableTop="@drawable/cgt_selector_tabbar_addressbook_bg"
+            android:text="@string/cgt_tabbar_addressbook" />
+
+        <RadioButton
+            android:id="@+id/cgt_rb_find"
+            style="@style/cgt_tabbar"
+            android:drawableTop="@drawable/cgt_selector_tabbar_find_bg"
+            android:text="@string/cgt_tabbar_find" />
+
+        <RadioButton
+            android:id="@+id/cgt_rb_me"
+            style="@style/cgt_tabbar"
+            android:drawableTop="@drawable/cgt_selector_tabbar_me_bg"
+            android:text="@string/cgt_tabbar_me" />
+    </RadioGroup>
+
+</LinearLayout>
