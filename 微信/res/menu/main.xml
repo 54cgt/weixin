@@ -1,0 +1,34 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/cgt_menu_finish"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/cgt_menu_finish"/>
+    <item
+        android:id="@+id/cgt_menu_account_manager"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/cgt_menu_account_manager"/>
+    <item
+        android:id="@+id/cgt_menu_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/cgt_menu_settings"/>
+    <item
+        android:id="@+id/cgt_menu_officialweibo"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/cgt_menu_officialweibo"/>
+    <item
+        android:id="@+id/cgt_menu_night"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/cgt_menu_night"/>
+    <item
+        android:id="@+id/cgt_menu_more"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/cgt_menu_more"/>
+
+</menu>

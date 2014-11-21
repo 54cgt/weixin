@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">微信</string>
+    <string name="cgt_menu_finish">退出</string>
+    <string name="cgt_menu_account_manager">账号管理</string>
+    <string name="cgt_menu_settings">设置</string>
+    <string name="cgt_menu_officialweibo">官方微博</string>
+    <string name="cgt_menu_night">夜间模式</string>
+    <string name="cgt_menu_night_close">日间模式</string>
+    <string name="cgt_menu_more">更多</string>
+
+    <string name="cgt_tabbar_weixin">微信</string>
+    <string name="cgt_tabbar_addressbook">通讯录</string>
+    <string name="cgt_tabbar_find">发现</string>
+    <string name="cgt_tabbar_me">我</string>
+
+</resources>
