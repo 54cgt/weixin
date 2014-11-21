@@ -1,4 +1,4 @@
-﻿微信-Android版
+微信-Android版
 ====================
 > 如果你也对开源微信-Android版的实现原理感兴趣，欢迎 Star 和 Fork [微信-Android版](https://github.com/54cgt/weixin)  
 > 欢迎加入 QQ 交流群：1234567890 (入群理由填写群介绍问题答案)  
