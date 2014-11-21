@@ -9,12 +9,12 @@ import android.content.Context;
 public class ServiceStatusUtils {
 	
 	/**
-	 * �ж�һ�������Ƿ��ڿ���״̬
-	 * @param context ������
-	 * @param serviceClassname ���������������
+	 * 判断一个服务是否处于开启状态
+	 * @param context 上下文
+	 * @param serviceClassname 服务的完整的类名称
 	 * @return
 	 */
-	public static boolean isServiceRunning(Context context, String serviceClassname){
+	public static boolean  isServiceRunning(Context context,String serviceClassname){
 		ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 		List<RunningServiceInfo>  serviceInfos = am.getRunningServices(100);
 		for(RunningServiceInfo serviceInfo : serviceInfos){

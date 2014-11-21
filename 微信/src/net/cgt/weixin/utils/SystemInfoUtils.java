@@ -12,27 +12,27 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 
 /**
- * ϵͳ��Ϣ�Ĺ�����
+ * 系统信息的工具类
  * @author Administrator
  *
  */
 public class SystemInfoUtils {
 
 	/**
-	 * ��ȡ�ֻ������������еĽ�̵ĸ���
-	 * @param context ������
+	 * 获取手机里面正在运行的进程的个数
+	 * @param context 上下文
 	 * @return
 	 */
 	public static int getRunningProcessCount(Context context){
 		ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-		//��ȡ�ֻ��������е��������еĽ����Ϣ 
+		//获取手机里面所有的正在运行的进程信息 
 		List<RunningAppProcessInfo> infos = am.getRunningAppProcesses();
 		return infos.size();
 	}
 	
 	/**
-	 * ��ȡ���õ��ֻ��ڴ�
-	 * @param context ������
+	 * 获取可用的手机内存
+	 * @param context 上下文
 	 * @return
 	 */
 	public static long getAvailRAM(Context context){
@@ -42,8 +42,8 @@ public class SystemInfoUtils {
 		return outInfo.availMem;
 	}
 	/**
-	 * ��ȡȫ�����ֻ��ڴ�
-	 * @param context ������
+	 * 获取全部的手机内存
+	 * @param context 上下文
 	 * @return
 	 */
 	public static long getTotalRAM(Context context){
@@ -55,7 +55,7 @@ public class SystemInfoUtils {
 			File file = new File("/proc/meminfo");
 			FileInputStream fis = new FileInputStream(file);
 			BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-			//MemTotal:         513000 kB  �ַ� ��
+			//MemTotal:         513000 kB  字符 串
 			String line = br.readLine();
 			char[] chars = line.toCharArray();
 			StringBuffer sb = new StringBuffer();
@@ -65,7 +65,7 @@ public class SystemInfoUtils {
 				}
 			}
 			long memsize = Integer.parseInt(sb.toString());
-			return memsize*1024;//byte ��λ 
+			return memsize*1024;//byte 单位 
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
