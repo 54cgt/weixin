@@ -1,6 +1,11 @@
 package net.cgt.weixin;
 
+import android.app.Activity;
+
 public class GlobalParams {
+
+	/** 全局的activity **/
+	public static Activity activity = null;
 
 	/**
 	 * 代理的ip

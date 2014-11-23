@@ -8,9 +8,4 @@ package net.cgt.weixin.fragment;
  */
 public class AddressBookFragment extends BaseFragment {
 
-	@Override
-	public CharSequence initContent() {
-		return "通讯录";
-	}
-
 }

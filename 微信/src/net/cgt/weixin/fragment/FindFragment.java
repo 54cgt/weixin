@@ -8,9 +8,4 @@ package net.cgt.weixin.fragment;
  */
 public class FindFragment extends BaseFragment {
 
-	@Override
-	public CharSequence initContent() {
-		return "发现";
-	}
-
 }

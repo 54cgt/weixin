@@ -8,26 +8,32 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 /**
  * Fragment基类
  * 
- * @author lijian-pc
+ * @author lijian
  * 
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public abstract class BaseFragment extends Fragment {
 
+	private int layoutResID;
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.cgt_fragment_base, null);
-		TextView textView = (TextView) view.findViewById(R.id.cgt_tv_content);
-		textView.setText(initContent());
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = null;
+		if (layoutResID == 0) {
+			view = inflater.inflate(R.layout.cgt_fragment_base, null);
+			return view;
+		} else {
+			view = inflater.inflate(layoutResID, null);
+		}
 		return view;
 	}
 
-	public abstract CharSequence initContent();
+	public void setContentView(int layoutResID) {
+		this.layoutResID = layoutResID;
+	}
 
 }

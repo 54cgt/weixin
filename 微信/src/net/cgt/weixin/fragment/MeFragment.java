@@ -8,9 +8,4 @@ package net.cgt.weixin.fragment;
  */
 public class MeFragment extends BaseFragment {
 
-	@Override
-	public CharSequence initContent() {
-		return "我";
-	}
-
 }
