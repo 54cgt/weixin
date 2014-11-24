@@ -28,25 +28,25 @@
             android:id="@+id/cgt_rb_weixin"
             style="@style/cgt_tabbar"
             android:drawableTop="@drawable/cgt_selector_tabbar_weixin_bg"
-            android:text="@string/cgt_tabbar_weixin" />
+            android:text="@string/text_tabbar_weixin" />
 
         <RadioButton
             android:id="@+id/cgt_rb_addressbook"
             style="@style/cgt_tabbar"
             android:drawableTop="@drawable/cgt_selector_tabbar_addressbook_bg"
-            android:text="@string/cgt_tabbar_addressbook" />
+            android:text="@string/text_tabbar_addressbook" />
 
         <RadioButton
             android:id="@+id/cgt_rb_find"
             style="@style/cgt_tabbar"
             android:drawableTop="@drawable/cgt_selector_tabbar_find_bg"
-            android:text="@string/cgt_tabbar_find" />
+            android:text="@string/text_tabbar_find" />
 
         <RadioButton
             android:id="@+id/cgt_rb_me"
             style="@style/cgt_tabbar"
             android:drawableTop="@drawable/cgt_selector_tabbar_me_bg"
-            android:text="@string/cgt_tabbar_me" />
+            android:text="@string/text_tabbar_me" />
     </RadioGroup>
 
 </LinearLayout>

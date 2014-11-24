@@ -2,17 +2,29 @@
 <resources>
 
     <string name="app_name">微信</string>
-    <string name="cgt_menu_finish">退出</string>
-    <string name="cgt_menu_account_manager">账号管理</string>
-    <string name="cgt_menu_settings">设置</string>
-    <string name="cgt_menu_officialweibo">官方微博</string>
-    <string name="cgt_menu_night">夜间模式</string>
-    <string name="cgt_menu_night_close">日间模式</string>
-    <string name="cgt_menu_more">更多</string>
+    <string name="text_menu_finish">退出</string>
+    <string name="text_menu_account_manager">账号管理</string>
+    <string name="text_menu_settings">设置</string>
+    <string name="text_menu_officialweibo">官方微博</string>
+    <string name="text_menu_night">夜间模式</string>
+    <string name="text_menu_night_close">日间模式</string>
+    <string name="text_menu_more">更多</string>
 
-    <string name="cgt_tabbar_weixin">微信</string>
-    <string name="cgt_tabbar_addressbook">通讯录</string>
-    <string name="cgt_tabbar_find">发现</string>
-    <string name="cgt_tabbar_me">我</string>
-
+    <string name="text_tabbar_weixin">微信</string>
+    <string name="text_tabbar_addressbook">通讯录</string>
+    <string name="text_tabbar_find">发现</string>
+    <string name="text_tabbar_me">我</string>
+    
+    <string name="text_regist_userName">登\u0020\u0020录\u0020\u0020名:</string>
+    <string name="text_regist_nickName">昵\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020称:</string>
+    <string name="text_regist_pwd">密\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020码:</string>
+    <string name="text_regist_confirmPwd">确认密码:</string>
+    
+    <string name="text_hint_regist_userName">请输入用户名</string>
+    <string name="text_hint_regist_nickName">请输入昵称</string>
+    <string name="text_hint_regist_pwd">6-16位数字或字母</string>
+    <string name="text_hint_regist_rpwd">重复密码</string>
+    
+    <string name="text_regist_btn">注\u0020\u0020册</string>
+    
 </resources>
