@@ -1,26 +1,28 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
     <FrameLayout
         android:id="@+id/cgt_fl_content"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/middle"
         android:background="@color/white" >
     </FrameLayout>
 
     <View
+        android:id="@+id/middle"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_above="@+id/cgt_rg_tab"
         android:background="@color/color_dddddd" />
 
     <RadioGroup
         android:id="@+id/cgt_rg_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:orientation="horizontal" >
 
@@ -49,4 +51,4 @@
             android:text="@string/text_tabbar_me" />
     </RadioGroup>
 
-</LinearLayout>
+</RelativeLayout>

@@ -1,11 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menu_weixin_name"
-        android:orderInCategory="100"
-        android:showAsAction="always"
-        android:title="@string/app_name"/>
-    <item
         android:id="@+id/menu_weixin_search"
         android:actionViewClass="android.widget.SearchView"
         android:icon="@drawable/cgt_menu_weixin_search"
