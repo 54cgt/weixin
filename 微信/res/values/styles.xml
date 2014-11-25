@@ -42,5 +42,16 @@
         <item name="android:background">@drawable/cgt_selector_btn_bg</item>
         <item name="android:textColor">@color/cgt_selector_tabbar_textcolor</item>
     </style>
+
+    <style name="cgt_editText">
+        <item name="android:layout_marginLeft">5dip</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:paddingLeft">5dip</item>
+        <item name="android:paddingRight">5dip</item>
+        <item name="android:background">@drawable/cgt_selector_edit_bg</item>
+        <item name="android:textColor">@color/cgt_selector_tabbar_textcolor</item>
+    </style>
     
 </resources>

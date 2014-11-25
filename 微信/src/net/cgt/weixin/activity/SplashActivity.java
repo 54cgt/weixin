@@ -3,15 +3,11 @@ package net.cgt.weixin.activity;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import net.cgt.weixin.Constants;
 import net.cgt.weixin.GlobalParams;
 import net.cgt.weixin.R;
-import net.cgt.weixin.utils.SpUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.provider.Settings.System;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -44,7 +40,7 @@ public class SplashActivity extends Activity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);//无标题
 		setContentView(R.layout.cgt_activity_splash);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//全屏
-
+		
 		TimerTask timerTask = new TimerTask() {
 
 			@Override

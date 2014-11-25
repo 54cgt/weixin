@@ -23,15 +23,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="用户名:"
+            android:text="@string/text_login_userName"
             android:textColor="@color/color_404040"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/cgt_et_userName"
+            style="@style/cgt_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="手机号/邮箱/昵称" />
+            android:hint="@string/text_hint_login_userName" />
     </LinearLayout>
 
     <LinearLayout
@@ -43,29 +44,24 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="密\u0020\u0020\u0020\u0020码:"
+            android:text="@string/text_login_pwd"
             android:textColor="@color/color_404040"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/cgt_et_password"
+            style="@style/cgt_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="请输入密码"
+            android:hint="@string/text_hint_login_pwd"
             android:inputType="textPassword" />
     </LinearLayout>
 
     <Button
         android:id="@+id/cgt_btn_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/cgt_btn"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dip"
-        android:paddingBottom="10dip"
-        android:paddingLeft="30dip"
-        android:paddingRight="30dip"
-        android:paddingTop="10dip"
-        android:text="登陆"
-        android:textSize="16sp" />
+        android:text="@string/text_login_btn" />
 
 </LinearLayout>

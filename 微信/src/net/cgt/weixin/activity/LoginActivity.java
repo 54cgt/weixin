@@ -52,6 +52,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 				GlobalParams.ISLOGIN = true;
 				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 				startActivity(intent);
+				finish();
 				break;
 			case HandlerTypeUtils.WX_HANDLER_TYPE_LOAD_DATA_FAIL:
 				AppToast.getToast().show("登陆失败");

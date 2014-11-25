@@ -19,10 +19,12 @@ import android.view.ViewGroup;
 public abstract class BaseFragment extends Fragment {
 
 	private int layoutResID;
+	private View view;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = null;
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		view = null;
 		if (layoutResID == 0) {
 			view = inflater.inflate(R.layout.cgt_fragment_base, null);
 			return view;
@@ -35,5 +37,5 @@ public abstract class BaseFragment extends Fragment {
 	public void setContentView(int layoutResID) {
 		this.layoutResID = layoutResID;
 	}
-
+	
 }

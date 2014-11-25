@@ -1,0 +1,39 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_weixin_name"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/app_name"/>
+    <item
+        android:id="@+id/menu_weixin_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/cgt_menu_weixin_search"
+        android:orderInCategory="100"
+        android:showAsAction="always|collapseActionView"/>
+    <item
+        android:id="@+id/menu_weixin_groupChat"
+        android:icon="@drawable/cgt_menu_weixin_groupchat"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/text_menu_weixin_groupChat"/>
+    <item
+        android:id="@+id/menu_weixin_addFriend"
+        android:icon="@drawable/cgt_menu_weixin_addfriend"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/text_menu_weixin_addFriend"/>
+    <item
+        android:id="@+id/menu_weixin_sweep"
+        android:icon="@drawable/cgt_menu_weixin_sweep"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/text_menu_weixin_sweep"/>
+    <item
+        android:id="@+id/menu_weixin_feedback"
+        android:icon="@drawable/cgt_menu_weixin_feedback"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/text_menu_weixin_feedback"/>
+
+</menu>
