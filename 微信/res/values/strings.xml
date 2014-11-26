@@ -39,4 +39,17 @@
     <string name="text_menu_weixin_sweep">扫一扫</string>
     <string name="text_menu_weixin_feedback">意见反馈</string>
     
+    <string name="text_find_friends">朋友圈</string>
+    <string name="text_find_sweep">扫一扫</string>
+    <string name="text_find_shake">摇一摇</string>
+    <string name="text_find_nearbyPeople">附近的人</string>
+    <string name="text_find_driftBottle">漂流瓶</string>
+    <string name="text_find_shopping">购物</string>
+    <string name="text_find_game">游戏</string>
+    
+    <string name="text_me_photo">相册</string>
+    <string name="text_me_collect">收藏</string>
+    <string name="text_me_wallet">钱包</string>
+    <string name="text_me_set">设置</string>
+    
 </resources>
