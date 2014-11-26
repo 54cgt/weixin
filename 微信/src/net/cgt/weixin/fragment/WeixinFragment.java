@@ -46,8 +46,10 @@ public class WeixinFragment extends BaseFragment {
 		List<User> mList_user = new ArrayList<User>();
 		for (int i = 0; i < 100; i++) {
 			User user = new User();
+//			user.setUserPhote("R.drawable.icon");
 			user.setUserAccount("test" + i);
-			user.setUserPhote("R.drawable.icon");
+			user.setPersonalizedSignature("人潮人海,有你有我");
+			user.setDate("11月26日");
 			mList_user.add(user);
 		}
 

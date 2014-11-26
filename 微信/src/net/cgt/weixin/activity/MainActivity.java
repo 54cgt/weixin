@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuItem.OnActionExpandListener;
 import android.view.ViewConfiguration;
 import android.view.Window;
 import android.widget.RadioButton;
@@ -74,7 +73,7 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 
 	private void initView() {
 		ActionBar actionBar = this.getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(false);
+		actionBar.setDisplayUseLogoEnabled(false);
 		setOverflowShowingAlways();
 
 		mFragmentManager = getFragmentManager();

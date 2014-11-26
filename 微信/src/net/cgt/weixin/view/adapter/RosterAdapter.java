@@ -53,16 +53,19 @@ public class RosterAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		} else {
 			holder = new ViewHolder();
-			convertView = View.inflate(mContext, R.layout.cgt_layout_roster, null);
-			holder.userPic = (ImageView) convertView.findViewById(R.id.cgt_iv_userPic);
+			convertView = View.inflate(mContext, R.layout.cgt_layout_roster_item, null);
+			holder.userPic = (ImageView) convertView.findViewById(R.id.cgt_iv_userPhoto);
 			holder.userName = (TextView) convertView.findViewById(R.id.cgt_tv_userName);
 			holder.personalizedSignature = (TextView) convertView.findViewById(R.id.cgt_tv_personalizedSignature);
-			holder.status = (TextView) convertView.findViewById(R.id.cgt_tv_status);
+			holder.date = (TextView) convertView.findViewById(R.id.cgt_tv_date);
 			convertView.setTag(holder);
 		}
 
+//		holder.userPic.setImageResource(Integer.parseInt(mList.get(position).getUserPhote()));
+		holder.userPic.setImageResource(R.drawable.cgt_logo);
 		holder.userName.setText(mList.get(position).getUserAccount());
-		holder.status.setText(mList.get(position).getUserPhote());
+		holder.personalizedSignature.setText(mList.get(position).getPersonalizedSignature());
+		holder.date.setText(mList.get(position).getDate());
 
 		return convertView;
 	}
@@ -75,7 +78,7 @@ public class RosterAdapter extends BaseAdapter {
 		/** 个性签名 **/
 		TextView personalizedSignature;
 		/** 在线状态 **/
-		TextView status;
+		TextView date;
 	}
 
 }

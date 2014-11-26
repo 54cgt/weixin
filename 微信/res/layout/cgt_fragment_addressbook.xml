@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <net.cgt.weixin.view.widget.IndexableListView
+        android:id="@+id/cgt_ilv_addressbook"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/color_dddddd"
+        android:dividerHeight="0.5dip" />
+
+</LinearLayout>
