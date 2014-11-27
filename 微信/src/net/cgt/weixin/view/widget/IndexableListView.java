@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 woozzu
+ * Copyright 2014 cgt
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,14 +38,22 @@ public class IndexableListView extends ListView {
 
 	public IndexableListView(Context context) {
 		super(context);
+		init(context);
 	}
 
 	public IndexableListView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		init(context);
 	}
 
 	public IndexableListView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		init(context);
+	}
+
+	private void init(Context context) {
+		if (mScroller == null)
+			mScroller = new IndexScroller(context, this);
 	}
 
 	@Override
@@ -57,12 +65,13 @@ public class IndexableListView extends ListView {
 	public void setFastScrollEnabled(boolean enabled) {
 		mIsFastScrollEnabled = enabled;
 		if (mIsFastScrollEnabled) {
-			if (mScroller == null)
-				mScroller = new IndexScroller(getContext(), this);
+			if (mScroller != null) {
+				mScroller.show();// 右侧索引条显示
+			}
 		} else {
 			// 如果不是快速滚动
 			if (mScroller != null) {
-				mScroller.hide();//右侧索引条隐藏
+				mScroller.hide();// 右侧索引条隐藏
 				mScroller = null;
 			}
 		}

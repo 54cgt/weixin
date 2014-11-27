@@ -62,7 +62,7 @@ public class MeFragment extends BaseFragment implements OnClickListener {
 	private void initData() {
 		mIv_userPic.setImageResource(R.drawable.user_picture);
 		mTv_userName.setText("深情小建");
-		mTv_weixinNum.setText("lijian374452668");
+		mTv_weixinNum.setText("微信号：lijian374452668");
 	}
 
 	@Override

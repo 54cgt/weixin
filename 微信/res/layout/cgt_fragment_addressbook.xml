@@ -9,7 +9,9 @@
         android:id="@+id/cgt_ilv_addressbook"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/color_dddddd"
-        android:dividerHeight="0.5dip" />
+        android:divider="@null"
+        android:dividerHeight="0dip"
+        android:overScrollMode="never"
+        android:scrollbars="none" />
 
 </LinearLayout>

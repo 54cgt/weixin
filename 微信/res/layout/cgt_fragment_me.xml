@@ -18,9 +18,9 @@
             android:id="@+id/cgt_iv_me_userPic"
             android:layout_width="60dip"
             android:layout_height="60dip"
-            android:layout_marginBottom="5dip"
+            android:layout_marginBottom="8dip"
             android:layout_marginLeft="10dip"
-            android:layout_marginTop="5dip"
+            android:layout_marginTop="8dip"
             android:src="@drawable/user_picture" />
 
         <LinearLayout

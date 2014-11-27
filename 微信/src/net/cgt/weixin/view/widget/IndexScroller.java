@@ -16,6 +16,11 @@
 
 package net.cgt.weixin.view.widget;
 
+import org.xbill.DNS.tests.primary;
+
+import net.cgt.weixin.R;
+import net.cgt.weixin.utils.L;
+import net.cgt.weixin.utils.LogUtil;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -36,6 +41,11 @@ import android.widget.SectionIndexer;
  * @date 2014-11-26
  */
 public class IndexScroller {
+
+	private static final String LOGTAG = LogUtil
+			.makeLogTag(IndexScroller.class);
+
+	private Context mContext;
 
 	/**
 	 * 索引条宽度
@@ -81,6 +91,22 @@ public class IndexScroller {
 	 * 是否正在索引
 	 */
 	private boolean mIsIndexing = false;
+	/**
+	 * 右侧索引文本色值
+	 */
+	private static final String COLOR_RIGHT_TEXT = "#565656";
+	/**
+	 * 右侧索引背景色值
+	 */
+	private static final String COLOR_RIGHT_BACKGROUND = "#808080";// "#bfbfbf";
+	/**
+	 * 中间预览文本色值
+	 */
+	private static final String COLOR_MIDDLE_TEXT = "#ffffff";
+	/**
+	 * 中间预览背景色值
+	 */
+	private static final String COLOR_MIDDLE_BACKGROUND = "#000000";// "#808080";
 
 	private ListView mListView = null;
 	private SectionIndexer mIndexer = null;
@@ -97,91 +123,121 @@ public class IndexScroller {
 	private static final int STATE_HIDING = 3;
 
 	public IndexScroller(Context context, ListView lv) {
+		this.mContext = context;
 		mDensity = context.getResources().getDisplayMetrics().density;
 		mScaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
 		mListView = lv;
 		setAdapter(mListView.getAdapter());
 
-		mIndexbarWidth = 20 * mDensity;
-		mIndexbarMargin = 10 * mDensity;
-		mPreviewPadding = 5 * mDensity;
+		mIndexbarWidth = 25 * mDensity;
+		mIndexbarMargin = 0 * mDensity;
+		mPreviewPadding = 10 * mDensity;
 	}
 
 	public void draw(Canvas canvas) {
+		if (mSections != null && mSections.length > 0) {
+			onDrawRightIndexText(canvas);
+		}
+
 		if (mState == STATE_HIDDEN)
 			return;
 
-		// mAlphaRate determines the rate of opacity
-		Paint indexbarPaint = new Paint();
-		indexbarPaint.setColor(Color.BLACK);
-		indexbarPaint.setAlpha((int) (64 * mAlphaRate));
-		indexbarPaint.setAntiAlias(true);
-		// 画右侧字母索引的圆矩形
-		canvas.drawRoundRect(mIndexbarRect, 5 * mDensity, 5 * mDensity,
-				indexbarPaint);
+		onDrawRightIndexBackground(canvas);
 
 		if (mSections != null && mSections.length > 0) {
 			// Preview is shown when mCurrentSection is set
 			// 中间预览文本
 			if (mCurrentSection >= 0) {
-				Paint previewPaint = new Paint(); // 用来绘画索引条背景的画笔
-				previewPaint.setColor(Color.BLACK);// 设置画笔颜色为黑色
-				previewPaint.setAlpha(96); // 设置透明度
-				previewPaint.setAntiAlias(true);// 设置抗锯齿
-				previewPaint.setShadowLayer(3, 0, 0, Color.argb(64, 0, 0, 0)); // 设置阴影层
-
-				Paint previewTextPaint = new Paint(); // 用来绘画索引字母的画笔
-				previewTextPaint.setColor(Color.WHITE); // 设置画笔为白色
-				previewTextPaint.setAntiAlias(true); // 设置抗锯齿
-				previewTextPaint.setTextSize(50 * mScaledDensity); // 设置字体大小
-
-				// 单个文本的宽度
-				float previewTextWidth = previewTextPaint
-						.measureText(mSections[mCurrentSection]);
-
-				float previewSize = 2 * mPreviewPadding
-						+ previewTextPaint.descent()
-						- previewTextPaint.ascent();
-
-				RectF previewRect = new RectF(
-						(mListViewWidth - previewSize) / 2,
-						(mListViewHeight - previewSize) / 2,
-						(mListViewWidth - previewSize) / 2 + previewSize,
-						(mListViewHeight - previewSize) / 2 + previewSize);
-
-				// 中间索引的那个框
-				canvas.drawRoundRect(previewRect, 5 * mDensity, 5 * mDensity,
-						previewPaint);
-
-				// 绘画索引字母
-				canvas.drawText(
-						mSections[mCurrentSection],
-						previewRect.left + (previewSize - previewTextWidth) / 2
-								- 1,
-						previewRect.top + mPreviewPadding
-								- previewTextPaint.ascent() + 1,
-						previewTextPaint);
-			}
-
-			// 绘画右侧索引条的字母
-			Paint indexPaint = new Paint();
-			indexPaint.setColor(Color.WHITE);
-			indexPaint.setAlpha((int) (255 * mAlphaRate));
-			indexPaint.setAntiAlias(true);
-			indexPaint.setTextSize(12 * mScaledDensity);
-
-			float sectionHeight = (mIndexbarRect.height() - 2 * mIndexbarMargin)
-					/ mSections.length;
-			float paddingTop = (sectionHeight - (indexPaint.descent() - indexPaint
-					.ascent())) / 2;
-			for (int i = 0; i < mSections.length; i++) {
-				float paddingLeft = (mIndexbarWidth - indexPaint
-						.measureText(mSections[i])) / 2;
-				canvas.drawText(mSections[i], mIndexbarRect.left + paddingLeft,
-						mIndexbarRect.top + mIndexbarMargin + sectionHeight * i
-								+ paddingTop - indexPaint.ascent(), indexPaint);
+				onDrawMiddlePreview(canvas);
 			}
 		}
+	}
+
+	/**
+	 * 绘制右侧索引条文本
+	 * 
+	 * @param canvas
+	 */
+	private void onDrawRightIndexText(Canvas canvas) {
+		L.d(LOGTAG, "onDrawRightIndexText");
+		// 绘画右侧索引条的字母
+		Paint indexPaint = new Paint();
+		indexPaint.setColor(Color.parseColor(COLOR_RIGHT_TEXT));
+		// indexPaint.setAlpha((int) (255 * mAlphaRate));
+		indexPaint.setAntiAlias(true);
+		indexPaint.setTextSize(14 * mScaledDensity);
+
+		float sectionHeight = (mIndexbarRect.height() - 2 * mIndexbarMargin)
+				/ mSections.length;
+		float paddingTop = (sectionHeight - (indexPaint.descent() - indexPaint
+				.ascent())) / 2;
+		for (int i = 0; i < mSections.length; i++) {
+			float paddingLeft = (mIndexbarWidth - indexPaint
+					.measureText(mSections[i])) / 2;
+			canvas.drawText(mSections[i], mIndexbarRect.left + paddingLeft,
+					mIndexbarRect.top + mIndexbarMargin + sectionHeight * i
+							+ paddingTop - indexPaint.ascent(), indexPaint);
+		}
+	}
+
+	/**
+	 * 绘制中间预览view
+	 * 
+	 * @param canvas
+	 */
+	private void onDrawMiddlePreview(Canvas canvas) {
+		L.d(LOGTAG, "onDrawMiddlePreview");
+		Paint previewPaint = new Paint(); // 用来绘画预览文本背景的画笔
+		previewPaint.setColor(Color.parseColor(COLOR_MIDDLE_BACKGROUND));// 设置画笔颜色为黑色
+		previewPaint.setAlpha(96); // 设置透明度
+		previewPaint.setAntiAlias(true);// 设置抗锯齿
+		previewPaint.setShadowLayer(3, 0, 0, Color.argb(64, 0, 0, 0)); // 设置阴影层
+
+		Paint previewTextPaint = new Paint(); // 用来绘画预览字母的画笔
+		previewTextPaint.setColor(Color.parseColor(COLOR_MIDDLE_TEXT)); // 设置画笔为白色
+		previewTextPaint.setAntiAlias(true); // 设置抗锯齿
+		previewTextPaint.setTextSize(60 * mScaledDensity); // 设置字体大小
+
+		// 单个文本的宽度
+		float previewTextWidth = previewTextPaint
+				.measureText(mSections[mCurrentSection]);
+
+		float previewSize = 2 * mPreviewPadding + previewTextPaint.descent()
+				- previewTextPaint.ascent();
+
+		RectF previewRect = new RectF((mListViewWidth - previewSize) / 2,
+				(mListViewHeight - previewSize) / 2,
+				(mListViewWidth - previewSize) / 2 + previewSize,
+				(mListViewHeight - previewSize) / 2 + previewSize);
+
+		// 中间索引的那个框
+		canvas.drawRoundRect(previewRect, 5 * mDensity, 5 * mDensity,
+				previewPaint);
+
+		// 绘画索引字母
+		canvas.drawText(mSections[mCurrentSection], previewRect.left
+				+ (previewSize - previewTextWidth) / 2 - 1, previewRect.top
+				+ mPreviewPadding - previewTextPaint.ascent() + 1,
+				previewTextPaint);
+	}
+
+	/**
+	 * 绘制右侧索引的背景
+	 * 
+	 * @param canvas
+	 */
+	private void onDrawRightIndexBackground(Canvas canvas) {
+		L.d(LOGTAG, "onDrawRoundRectBackground");
+		// mAlphaRate determines the rate of opacity
+		Paint indexbarPaint = new Paint();
+		// indexbarPaint.setColor(Color.BLACK);
+		indexbarPaint.setColor(Color.parseColor(COLOR_RIGHT_BACKGROUND));
+		indexbarPaint.setAlpha((int) (64 * mAlphaRate));
+		indexbarPaint.setAntiAlias(true);
+		// 画右侧字母索引的圆矩形
+		// canvas.drawRoundRect(mIndexbarRect, 5 * mDensity, 5 * mDensity,
+		// indexbarPaint);
+		canvas.drawRect(mIndexbarRect, indexbarPaint);
 	}
 
 	public boolean onTouchEvent(MotionEvent ev) {
@@ -189,7 +245,7 @@ public class IndexScroller {
 		case MotionEvent.ACTION_DOWN:
 			// If down event occurs inside index bar region, start indexing
 			// 如果按下的事件发生在索引条区域内,开始索引
-			if (mState != STATE_HIDDEN && contains(ev.getX(), ev.getY())) {
+			if (contains(ev.getX(), ev.getY())) {
 				setState(STATE_SHOWN);
 
 				// It demonstrates that the motion event started from index bar
@@ -226,8 +282,10 @@ public class IndexScroller {
 				mIsIndexing = false;
 				mCurrentSection = -1;
 			}
-			if (mState == STATE_SHOWN)
+			if (mState == STATE_SHOWN){
 				setState(STATE_HIDING);
+				return true;				
+			}
 			break;
 		}
 		return false;
@@ -294,6 +352,7 @@ public class IndexScroller {
 			break;
 		case STATE_SHOWN:
 			// Cancel any fade effect
+			mAlphaRate = 1;
 			mHandler.removeMessages(0);
 			break;
 		case STATE_HIDING:
