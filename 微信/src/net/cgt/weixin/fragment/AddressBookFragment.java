@@ -7,26 +7,32 @@ import java.util.List;
 import net.cgt.weixin.GlobalParams;
 import net.cgt.weixin.R;
 import net.cgt.weixin.domain.User;
-import net.cgt.weixin.view.adapter.AddressBookAdapter;
-import net.cgt.weixin.view.widget.IndexableListView;
+import net.cgt.weixin.view.adapter.PinyinAdapter;
+import net.cgt.weixin.view.pinyin.AssortView;
+import net.cgt.weixin.view.pinyin.AssortView.OnTouchAssortListener;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 /**
  * 通讯录
  * 
  * @author lijian-pc
- * 
+ * @date 2014-11-27
  */
 public class AddressBookFragment extends BaseFragment {
 
-	private IndexableListView mIlv_addressbook;
+	private ExpandableListView mElv_addressbook;
+	private AssortView mAv_addressbook_right;
+	private PinyinAdapter adapter;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.cgt_fragment_addressbook, null);
 		init(v);
 		return v;
@@ -38,8 +44,8 @@ public class AddressBookFragment extends BaseFragment {
 	}
 
 	private void initView(View v) {
-		mIlv_addressbook = (IndexableListView) v
-				.findViewById(R.id.cgt_ilv_addressbook);
+		mElv_addressbook = (ExpandableListView) v.findViewById(R.id.cgt_elv_addressbook);
+		mAv_addressbook_right = (AssortView) v.findViewById(R.id.cgt_av_addressbook_right);
 	}
 
 	private void initData() {
@@ -131,14 +137,46 @@ public class AddressBookFragment extends BaseFragment {
 			mList.add(user);
 		}
 
-		AddressBookAdapter addressBookAdapter = null;
-		if (addressBookAdapter == null) {
-			addressBookAdapter = new AddressBookAdapter(GlobalParams.activity,
-					mList);
+		if (adapter == null) {
+			adapter = new PinyinAdapter(GlobalParams.activity, mList);
 		} else {
-			addressBookAdapter.notifyDataSetChanged();
+			adapter.notifyDataSetChanged();
 		}
-		mIlv_addressbook.setAdapter(addressBookAdapter);
-		mIlv_addressbook.setFastScrollEnabled(true);// 设置快速滑动
+		mElv_addressbook.setAdapter(adapter);
+
+		//展开所有
+		for (int i = 0, length = adapter.getGroupCount(); i < length; i++) {
+			mElv_addressbook.expandGroup(i);
+		}
+
+		//字母按键回调
+		mAv_addressbook_right.setOnTouchAssortListener(new OnTouchAssortListener() {
+
+			View layoutView = LayoutInflater.from(GlobalParams.activity).inflate(R.layout.alert_dialog_menu_layout, null);
+			TextView text = (TextView) layoutView.findViewById(R.id.content);
+			PopupWindow popupWindow;
+
+			public void onTouchAssortListener(String str) {
+				int index = adapter.getAssort().getHashList().indexOfKey(str);
+				if (index != -1) {
+					mElv_addressbook.setSelectedGroup(index);
+					;
+				}
+				if (popupWindow != null) {
+					text.setText(str);
+				} else {
+					popupWindow = new PopupWindow(layoutView, 80, 80, false);
+					// 显示在Activity的根视图中心
+					popupWindow.showAtLocation(GlobalParams.activity.getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+				}
+				text.setText(str);
+			}
+
+			public void onTouchAssortUP() {
+				if (popupWindow != null)
+					popupWindow.dismiss();
+				popupWindow = null;
+			}
+		});
 	}
 }

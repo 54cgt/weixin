@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:background="@drawable/dialog_assort"
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
+	<TextView android:layout_gravity="center" android:id="@+id/content"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:layout_centerInParent="true"
+		android:gravity="center"
+		android:textColor="#FFF7FF"
+		android:textSize="40dip" 
+		android:layout_margin="5dip"/>
+</RelativeLayout >
