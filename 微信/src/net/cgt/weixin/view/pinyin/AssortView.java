@@ -9,9 +9,65 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.Button;
 
+/**
+ * 分类View
+ * 
+ * @author lijian-pc
+ * @date 2014-11-28
+ */
 public class AssortView extends Button {
 
+	/**
+	 * 索引条宽度
+	 **/
+	private float mIndexbarWidth;
+	/**
+	 * 索引条外边距
+	 **/
+	private float mIndexbarMargin;
+	/**
+	 * 索引条内边距
+	 **/
+	private float mPreviewPadding;
+	/**
+	 * 密度
+	 **/
+	private float mDensity;
+	/**
+	 * 缩放密度
+	 **/
+	private float mScaledDensity;
+	/**
+	 * 透明度
+	 **/
+	private float mAlphaRate;
+	/**
+	 * 右侧索引文本色值
+	 */
+	private static final String COLOR_RIGHT_TEXT = "#565656";
+	/**
+	 * 右侧索引背景色值
+	 */
+	private static final String COLOR_RIGHT_BACKGROUND = "#808080";// "#bfbfbf";
+	/**
+	 * 中间预览文本色值
+	 */
+	private static final String COLOR_MIDDLE_TEXT = "#ffffff";
+	/**
+	 * 中间预览背景色值
+	 */
+	private static final String COLOR_MIDDLE_BACKGROUND = "#000000";// "#808080";
+
+	/**
+	 * 触摸右侧的分类字母响应监听
+	 * 
+	 * @author lijian-pc
+	 */
 	public interface OnTouchAssortListener {
+		/**
+		 * 
+		 * @param s
+		 */
 		public void onTouchAssortListener(String s);
 
 		public void onTouchAssortUP();
@@ -19,34 +75,53 @@ public class AssortView extends Button {
 
 	public AssortView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
+		init(context);
 	}
 
 	public AssortView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
+		init(context);
 	}
 
 	public AssortView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
+		init(context);
+	}
+
+	private void init(Context context) {
+		mDensity = context.getResources().getDisplayMetrics().density;
+		mScaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+		mIndexbarWidth = 25 * mDensity;
+		mIndexbarMargin = 0 * mDensity;
+		mPreviewPadding = 10 * mDensity;
 	}
 
 	// 分类
-	private String[] assort = { "?", "#", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+	// private String[] assort = { "?", "#", "A", "B", "C", "D", "E", "F", "G",
+	// "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
+	// "V", "W", "X", "Y", "Z" };
+	/** 导航分类字符 **/
+	private String[] assort = { "↑", "☆", "A", "B", "C", "D", "E", "F", "G",
+			"H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+			"U", "V", "W", "X", "Y", "Z", "#" };
 	private Paint paint = new Paint();
 	// 选择的索引
 	private int selectIndex = -1;
-	// 字母监听器
+	/**字母监听器**/ 
 	private OnTouchAssortListener onTouch;
 
+	/**
+	 * 设置右侧字母触摸的监听
+	 * 
+	 * @param onTouch
+	 *            要实现的监听接口
+	 */
 	public void setOnTouchAssortListener(OnTouchAssortListener onTouch) {
 		this.onTouch = onTouch;
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		// TODO Auto-generated method stub
 		super.onDraw(canvas);
 		int height = getHeight();
 		int width = getWidth();
@@ -57,13 +132,14 @@ public class AssortView extends Button {
 			paint.setAntiAlias(true);
 			// 默认粗体
 			paint.setTypeface(Typeface.DEFAULT_BOLD);
-			// 白色
-			paint.setColor(Color.WHITE);
+			// 颜色
+			paint.setColor(Color.parseColor(COLOR_RIGHT_TEXT));
+			paint.setTextSize(14 * mScaledDensity);
 			if (i == selectIndex) {
 				// 被选择的字母改变颜色和粗体
 				paint.setColor(Color.parseColor("#3399ff"));
 				paint.setFakeBoldText(true);
-				paint.setTextSize(30);
+				paint.setTextSize(30 * mScaledDensity);
 			}
 			// 计算字母的X坐标
 			float xPos = width / 2 - paint.measureText(assort[i]) / 2;
@@ -72,12 +148,10 @@ public class AssortView extends Button {
 			canvas.drawText(assort[i], xPos, yPos, paint);
 			paint.reset();
 		}
-
 	}
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
 		float y = event.getY();
 		int index = (int) (y / getHeight() * assort.length);
 		if (index >= 0 && index < assort.length) {
@@ -90,7 +164,6 @@ public class AssortView extends Button {
 					if (onTouch != null) {
 						onTouch.onTouchAssortListener(assort[selectIndex]);
 					}
-
 				}
 				break;
 			case MotionEvent.ACTION_DOWN:
@@ -98,7 +171,6 @@ public class AssortView extends Button {
 				if (onTouch != null) {
 					onTouch.onTouchAssortListener(assort[selectIndex]);
 				}
-
 				break;
 			case MotionEvent.ACTION_UP:
 				if (onTouch != null) {

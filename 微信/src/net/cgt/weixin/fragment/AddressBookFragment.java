@@ -30,9 +30,11 @@ public class AddressBookFragment extends BaseFragment {
 	private ExpandableListView mElv_addressbook;
 	private AssortView mAv_addressbook_right;
 	private PinyinAdapter adapter;
+	private PopupWindow popupWindow;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.cgt_fragment_addressbook, null);
 		init(v);
 		return v;
@@ -44,8 +46,10 @@ public class AddressBookFragment extends BaseFragment {
 	}
 
 	private void initView(View v) {
-		mElv_addressbook = (ExpandableListView) v.findViewById(R.id.cgt_elv_addressbook);
-		mAv_addressbook_right = (AssortView) v.findViewById(R.id.cgt_av_addressbook_right);
+		mElv_addressbook = (ExpandableListView) v
+				.findViewById(R.id.cgt_elv_addressbook);
+		mAv_addressbook_right = (AssortView) v
+				.findViewById(R.id.cgt_av_addressbook_right);
 	}
 
 	private void initData() {
@@ -144,39 +148,68 @@ public class AddressBookFragment extends BaseFragment {
 		}
 		mElv_addressbook.setAdapter(adapter);
 
-		//展开所有
+		// 展开所有
 		for (int i = 0, length = adapter.getGroupCount(); i < length; i++) {
 			mElv_addressbook.expandGroup(i);
 		}
 
-		//字母按键回调
-		mAv_addressbook_right.setOnTouchAssortListener(new OnTouchAssortListener() {
+		// 字母按键回调
+		mAv_addressbook_right
+				.setOnTouchAssortListener(new OnTouchAssortListener() {
 
-			View layoutView = LayoutInflater.from(GlobalParams.activity).inflate(R.layout.alert_dialog_menu_layout, null);
-			TextView text = (TextView) layoutView.findViewById(R.id.content);
-			PopupWindow popupWindow;
+					View layoutView = LayoutInflater
+							.from(getActivity())
+							.inflate(
+									R.layout.cgt_layout_addressbook_middle_alert_dialog,
+									null);
+					TextView text = (TextView) layoutView
+							.findViewById(R.id.cgt_tv_addressbook_content);
 
-			public void onTouchAssortListener(String str) {
-				int index = adapter.getAssort().getHashList().indexOfKey(str);
-				if (index != -1) {
-					mElv_addressbook.setSelectedGroup(index);
-					;
-				}
-				if (popupWindow != null) {
-					text.setText(str);
-				} else {
-					popupWindow = new PopupWindow(layoutView, 80, 80, false);
-					// 显示在Activity的根视图中心
-					popupWindow.showAtLocation(GlobalParams.activity.getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-				}
-				text.setText(str);
-			}
+					@Override
+					public void onTouchAssortListener(String str) {
+						int index = adapter.getAssort().getHashList()
+								.indexOfKey(str);
+						if (index != -1) {
+							mElv_addressbook.setSelectedGroup(index);
+						}
+						if (popupWindow != null) {
+							text.setText(str);
+						} else {
+							popupWindow = new PopupWindow(layoutView, 80, 80,
+									false);
+							// 显示在Activity的根视图中心
+							popupWindow.showAtLocation(getActivity()
+									.getWindow().getDecorView(),
+									Gravity.CENTER, 0, 0);
+						}
+						text.setText(str);
+					}
 
-			public void onTouchAssortUP() {
-				if (popupWindow != null)
-					popupWindow.dismiss();
-				popupWindow = null;
-			}
-		});
+					@Override
+					public void onTouchAssortUP() {
+						if (popupWindow != null) {
+							popupWindow.dismiss();
+							popupWindow = null;
+						}
+					}
+				});
+	}
+
+	@Override
+	public void onStop() {
+		if (popupWindow != null) {
+			popupWindow.dismiss();
+			popupWindow = null;
+		}
+		super.onStop();
+	}
+
+	@Override
+	public void onDestroy() {
+		if (popupWindow != null) {
+			popupWindow.dismiss();
+			popupWindow = null;
+		}
+		super.onDestroy();
 	}
 }
