@@ -7,6 +7,8 @@ import java.util.List;
 import net.cgt.weixin.GlobalParams;
 import net.cgt.weixin.R;
 import net.cgt.weixin.domain.User;
+import net.cgt.weixin.utils.DensityUtil;
+import net.cgt.weixin.utils.LogUtil;
 import net.cgt.weixin.view.adapter.PinyinAdapter;
 import net.cgt.weixin.view.pinyin.AssortView;
 import net.cgt.weixin.view.pinyin.AssortView.OnTouchAssortListener;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -25,16 +28,23 @@ import android.widget.TextView;
  * @author lijian-pc
  * @date 2014-11-27
  */
-public class AddressBookFragment extends BaseFragment {
+public class AddressBookFragment extends BaseFragment /*implements OnClickListener */{
 
+	private static final String LOGTAG = LogUtil.makeLogTag(AddressBookFragment.class);
+
+//	private LinearLayout mLl_addressbook_top;
 	private ExpandableListView mElv_addressbook;
+//	private LinearLayout mLl_addressbook_newFriend;
+//	private LinearLayout mLl_addressbook_groupChat;
+//	private LinearLayout mLl_addressbook_mark;
+//	private LinearLayout mLl_addressbook_publicNumber;
+
 	private AssortView mAv_addressbook_right;
 	private PinyinAdapter adapter;
 	private PopupWindow popupWindow;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.cgt_fragment_addressbook, null);
 		init(v);
 		return v;
@@ -46,10 +56,19 @@ public class AddressBookFragment extends BaseFragment {
 	}
 
 	private void initView(View v) {
-		mElv_addressbook = (ExpandableListView) v
-				.findViewById(R.id.cgt_elv_addressbook);
-		mAv_addressbook_right = (AssortView) v
-				.findViewById(R.id.cgt_av_addressbook_right);
+//		mLl_addressbook_top = (LinearLayout) v.findViewById(R.id.cgt_ll_addressbook_top);
+		mElv_addressbook = (ExpandableListView) v.findViewById(R.id.cgt_elv_addressbook);
+		mAv_addressbook_right = (AssortView) v.findViewById(R.id.cgt_av_addressbook_right);
+
+//		mLl_addressbook_newFriend = (LinearLayout) v.findViewById(R.id.cgt_ll_addressbook_newFriend);
+//		mLl_addressbook_groupChat = (LinearLayout) v.findViewById(R.id.cgt_ll_addressbook_groupChat);
+//		mLl_addressbook_mark = (LinearLayout) v.findViewById(R.id.cgt_ll_addressbook_mark);
+//		mLl_addressbook_publicNumber = (LinearLayout) v.findViewById(R.id.cgt_ll_addressbook_publicNumber);
+//
+//		mLl_addressbook_newFriend.setOnClickListener(this);
+//		mLl_addressbook_groupChat.setOnClickListener(this);
+//		mLl_addressbook_mark.setOnClickListener(this);
+//		mLl_addressbook_publicNumber.setOnClickListener(this);
 	}
 
 	private void initData() {
@@ -138,6 +157,12 @@ public class AddressBookFragment extends BaseFragment {
 		for (int i = 0; i < mItems.size(); i++) {
 			User user = new User();
 			user.setUserAccount(mItems.get(i));
+			if (i % 5 == 0) {
+				user.setUserPhote(String.valueOf(R.drawable.icon));
+			} else {
+				user.setUserPhote(String.valueOf(R.drawable.user_picture));
+			}
+
 			mList.add(user);
 		}
 
@@ -154,45 +179,40 @@ public class AddressBookFragment extends BaseFragment {
 		}
 
 		// 字母按键回调
-		mAv_addressbook_right
-				.setOnTouchAssortListener(new OnTouchAssortListener() {
+		mAv_addressbook_right.setOnTouchAssortListener(new OnTouchAssortListener() {
 
-					View layoutView = LayoutInflater
-							.from(getActivity())
-							.inflate(
-									R.layout.cgt_layout_addressbook_middle_alert_dialog,
-									null);
-					TextView text = (TextView) layoutView
-							.findViewById(R.id.cgt_tv_addressbook_content);
+			View layoutView = LayoutInflater.from(getActivity()).inflate(R.layout.cgt_layout_addressbook_middle_alert_dialog, null);
+			TextView text = (TextView) layoutView.findViewById(R.id.cgt_tv_addressbook_content);
 
-					@Override
-					public void onTouchAssortListener(String str) {
-						int index = adapter.getAssort().getHashList()
-								.indexOfKey(str);
-						if (index != -1) {
-							mElv_addressbook.setSelectedGroup(index);
-						}
-						if (popupWindow != null) {
-							text.setText(str);
-						} else {
-							popupWindow = new PopupWindow(layoutView, 80, 80,
-									false);
-							// 显示在Activity的根视图中心
-							popupWindow.showAtLocation(getActivity()
-									.getWindow().getDecorView(),
-									Gravity.CENTER, 0, 0);
-						}
-						text.setText(str);
-					}
+			@Override
+			public void onTouchAssortListener(String str) {
+				//				if (str.equals("↑")) {
+				//					mLl_addressbook_top.setVisibility(View.VISIBLE);
+				//				} else {
+				//					mLl_addressbook_top.setVisibility(View.GONE);
+				//				}
+				int index = adapter.getAssort().getHashList().indexOfKey(str);
+				if (index != -1) {
+					mElv_addressbook.setSelectedGroup(index);
+				}
+				if (popupWindow != null) {
+					text.setText(str);
+				} else {
+					popupWindow = new PopupWindow(layoutView, DensityUtil.dip2px(getActivity(), 80), DensityUtil.dip2px(getActivity(), 80), false);
+					// 显示在Activity的根视图中心
+					popupWindow.showAtLocation(getActivity().getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+				}
+				text.setText(str);
+			}
 
-					@Override
-					public void onTouchAssortUP() {
-						if (popupWindow != null) {
-							popupWindow.dismiss();
-							popupWindow = null;
-						}
-					}
-				});
+			@Override
+			public void onTouchAssortUP() {
+				if (popupWindow != null) {
+					popupWindow.dismiss();
+					popupWindow = null;
+				}
+			}
+		});
 	}
 
 	@Override
@@ -212,4 +232,29 @@ public class AddressBookFragment extends BaseFragment {
 		}
 		super.onDestroy();
 	}
+
+//	@Override
+//	public void onClick(View v) {
+//		switch (v.getId()) {
+//		case R.id.cgt_ll_addressbook_newFriend:
+//			L.i(LOGTAG, "新的朋友");
+//			AppToast.getToast().show(R.string.text_addressbook_newFriend);
+//			break;
+//		case R.id.cgt_ll_addressbook_groupChat:
+//			L.i(LOGTAG, "群聊");
+//			AppToast.getToast().show(R.string.text_addressbook_groupChat);
+//			break;
+//		case R.id.cgt_ll_addressbook_mark:
+//			L.i(LOGTAG, "标签");
+//			AppToast.getToast().show(R.string.text_addressbook_mark);
+//			break;
+//		case R.id.cgt_ll_addressbook_publicNumber:
+//			L.i(LOGTAG, "公众号");
+//			AppToast.getToast().show(R.string.text_addressbook_publicNumber);
+//			break;
+//
+//		default:
+//			break;
+//		}
+//	}
 }

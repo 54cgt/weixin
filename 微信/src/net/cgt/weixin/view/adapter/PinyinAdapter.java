@@ -13,21 +13,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class PinyinAdapter extends BaseExpandableListAdapter {
-
-	// 字符串
+	/**
+	 * 要被排序的集合
+	 */
 	private List<User> mList;
 
-	private AssortPinyinList assort = new AssortPinyinList();
+	private AssortPinyinList mAssortPinyinList = new AssortPinyinList();
 
 	private Context context;
 
 	private LayoutInflater inflater;
 	// 中文排序
-	private LanguageComparator_CN cnSort = new LanguageComparator_CN();
+	private LanguageComparator_CN<String> cnSort_str = new LanguageComparator_CN<String>();
+	private LanguageComparator_CN<User> cnSort_user = new LanguageComparator_CN<User>();
 
 	public PinyinAdapter(Context context, List<User> userList) {
 		super();
@@ -38,79 +40,116 @@ public class PinyinAdapter extends BaseExpandableListAdapter {
 			userList = new ArrayList<User>();
 		}
 
-		long time = System.currentTimeMillis();
+		//		long time = System.currentTimeMillis();
 		// 排序
 		sort();
-		Toast.makeText(context, String.valueOf(System.currentTimeMillis() - time), 1).show();
+		//		Toast.makeText(context, String.valueOf(System.currentTimeMillis() - time), 1).show();
 	}
 
 	private void sort() {
 		// 分类
 		for (int i = 0; i < mList.size(); i++) {
-			assort.getHashList().add(mList.get(i).getUserAccount());
+			mAssortPinyinList.getHashList().add(mList.get(i));
 		}
-		assort.getHashList().sortKeyComparator(cnSort);
-		for (int i = 0, length = assort.getHashList().size(); i < length; i++) {
-			Collections.sort((assort.getHashList().getValueListIndex(i)), cnSort);
+		mAssortPinyinList.getHashList().sortKeyComparator(cnSort_str);
+		for (int i = 0, length = mAssortPinyinList.getHashList().size(); i < length; i++) {
+			Collections.sort((mAssortPinyinList.getHashList().getValueListThroughIndex(i)), cnSort_user);
 		}
-
 	}
 
-	public Object getChild(int group, int child) {
-		return assort.getHashList().getValueIndex(group, child);
-	}
-
-	public long getChildId(int group, int child) {
-		return child;
-	}
-
-	public View getChildView(int group, int child, boolean arg2, View contentView, ViewGroup arg4) {
-		if (contentView == null) {
-			contentView = inflater.inflate(R.layout.cgt_layout_addressbook_item, null);
-		}
-		TextView textView = (TextView) contentView.findViewById(R.id.cgt_tv_userName);
-		textView.setText(assort.getHashList().getValueIndex(group, child));
-		return contentView;
-	}
-
-	public int getChildrenCount(int group) {
-		return assort.getHashList().getValueListIndex(group).size();
-	}
-
-	public Object getGroup(int group) {
-		return assort.getHashList().getValueListIndex(group);
-	}
-
+	@Override
 	public int getGroupCount() {
-		return assort.getHashList().size();
+		return mAssortPinyinList.getHashList().size();
 	}
 
-	public long getGroupId(int group) {
-		return group;
+	@Override
+	public int getChildrenCount(int groupPosition) {
+		return mAssortPinyinList.getHashList().getValueListThroughIndex(groupPosition).size();
 	}
 
-	public View getGroupView(int group, boolean arg1, View contentView, ViewGroup arg3) {
-		if (contentView == null) {
-			contentView = inflater.inflate(R.layout.cgt_layout_addressbook_group_item, null);
-			contentView.setClickable(true);
-		}
-		TextView textView = (TextView) contentView.findViewById(R.id.name);
-		textView.setText(assort.getFirstChar(assort.getHashList().getValueIndex(group, 0)));
-		// 禁止伸展
-
-		return contentView;
+	@Override
+	public Object getGroup(int groupPosition) {
+		return mAssortPinyinList.getHashList().getValueListThroughIndex(groupPosition);
 	}
 
+	@Override
+	public Object getChild(int groupPosition, int childPosition) {
+		return mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, childPosition);
+	}
+
+	@Override
+	public long getGroupId(int groupPosition) {
+		return groupPosition;
+	}
+
+	@Override
+	public long getChildId(int groupPosition, int childPosition) {
+		return childPosition;
+	}
+
+	@Override
 	public boolean hasStableIds() {
+		//无论Child是否有相同的ID都指向同一个对象
+		//		这样说把. 通知ListView, 你id是唯一的. 不会重复,
+		//		默认这个方法是返回false的, 需要返回true.  这样, 才能使用ListView的
+		//		CHOICE_MODE_MULTIPLE, CHOICE_MODE_SINGLE, 通过getCheckedItemIds方法才能正常获取用户选中的选项的id, LZ可以试试看
+
+		//		组和子元素是否持有稳定的ID,也就是底层数据的改变不会影响到它们。
+		//	      　　返回值
+		//		返回一个Boolean类型的值，如果为TRUE，意味着相同的ID永远引用相同的对象。
 		return true;
 	}
 
-	public boolean isChildSelectable(int arg0, int arg1) {
+	@Override
+	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+		if (convertView == null) {
+			convertView = inflater.inflate(R.layout.cgt_layout_addressbook_group_item, null);
+			// 禁止伸展
+			convertView.setClickable(true);//设置是否可以点击伸展
+		}
+		TextView mTv_addressbook_group_item = (TextView) convertView.findViewById(R.id.cgt_tv_addressbook_group_item);
+		mTv_addressbook_group_item.setText(mAssortPinyinList.getFirstChar(mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, 0)));
+
+		return convertView;
+	}
+
+	@Override
+	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+		if (convertView == null) {
+			convertView = inflater.inflate(R.layout.cgt_layout_addressbook_item, null);
+		}
+		TextView mTv_userName = (TextView) convertView.findViewById(R.id.cgt_tv_userName);
+		ImageView mIv_userPhoto = (ImageView) convertView.findViewById(R.id.cgt_iv_userPhoto);
+		View mV_line = convertView.findViewById(R.id.cgt_v_line);
+		mTv_userName.setText(mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, childPosition).getUserAccount());
+		mIv_userPhoto.setImageResource(Integer.parseInt(mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, childPosition).getUserPhote()));
+		if (isLastChild) {
+			mV_line.setVisibility(View.GONE);
+		} else {
+			mV_line.setVisibility(View.VISIBLE);
+		}
+		return convertView;
+	}
+
+	/**
+	 * 是否选中指定位置上的子元素。
+	 * 
+	 * 参数
+	 * 
+	 * groupPosition 组位置（该组内部含有这个子元素）
+	 * 
+	 * childPosition 子元素位置
+	 * 
+	 * 返回值
+	 * 
+	 * 是否选中子元素
+	 */
+	@Override
+	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
 	}
 
 	public AssortPinyinList getAssort() {
-		return assort;
+		return mAssortPinyinList;
 	}
-
 }

@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		if (!GlobalParams.ISLOGIN) {
-			L.d(LOGTAG, "MainActivity--->isLogin");
+			L.d(LOGTAG, "MainActivity--->isLogin=" + GlobalParams.ISLOGIN);
 			Intent intent = new Intent(this, LoginActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -171,23 +171,23 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 		getMenuInflater().inflate(R.menu.cgt_menu_weixin, menu);
 		MenuItem searchItem = menu.findItem(R.id.menu_weixin_search);
 		SearchView searchView = (SearchView) searchItem.getActionView();
-//		// 给SearchView添加展开/合并的监听
-//		searchItem.setOnActionExpandListener(new OnActionExpandListener() {
-//
-//			@Override
-//			public boolean onMenuItemActionExpand(MenuItem item) {
-//				L.i(LOGTAG, "on expand");
-//				AppToast.getToast().show("搜索展开");
-//				return false;
-//			}
-//
-//			@Override
-//			public boolean onMenuItemActionCollapse(MenuItem item) {
-//				L.i(LOGTAG, "on collapse");
-//				AppToast.getToast().show("搜索合并");
-//				return false;
-//			}
-//		});
+		//		// 给SearchView添加展开/合并的监听
+		//		searchItem.setOnActionExpandListener(new OnActionExpandListener() {
+		//
+		//			@Override
+		//			public boolean onMenuItemActionExpand(MenuItem item) {
+		//				L.i(LOGTAG, "on expand");
+		//				AppToast.getToast().show("搜索展开");
+		//				return false;
+		//			}
+		//
+		//			@Override
+		//			public boolean onMenuItemActionCollapse(MenuItem item) {
+		//				L.i(LOGTAG, "on collapse");
+		//				AppToast.getToast().show("搜索合并");
+		//				return false;
+		//			}
+		//		});
 
 		return super.onCreateOptionsMenu(menu);//true;
 	}

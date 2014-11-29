@@ -101,20 +101,17 @@ public class AssortView extends Button {
 	// "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
 	// "V", "W", "X", "Y", "Z" };
 	/** 导航分类字符 **/
-	private String[] assort = { "↑", "☆", "A", "B", "C", "D", "E", "F", "G",
-			"H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
-			"U", "V", "W", "X", "Y", "Z", "#" };
+	private String[] assort = { "↑", "☆", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#" };
 	private Paint paint = new Paint();
 	// 选择的索引
 	private int selectIndex = -1;
-	/**字母监听器**/ 
+	/** 字母监听器 **/
 	private OnTouchAssortListener onTouch;
 
 	/**
-	 * 设置右侧字母触摸的监听
+	 * 设置右侧字母触摸的监听接口
 	 * 
-	 * @param onTouch
-	 *            要实现的监听接口
+	 * @param onTouch 要实现的监听接口
 	 */
 	public void setOnTouchAssortListener(OnTouchAssortListener onTouch) {
 		this.onTouch = onTouch;
@@ -131,7 +128,7 @@ public class AssortView extends Button {
 			// 抗锯齿
 			paint.setAntiAlias(true);
 			// 默认粗体
-			paint.setTypeface(Typeface.DEFAULT_BOLD);
+			//			paint.setTypeface(Typeface.DEFAULT_BOLD);
 			// 颜色
 			paint.setColor(Color.parseColor(COLOR_RIGHT_TEXT));
 			paint.setTextSize(14 * mScaledDensity);

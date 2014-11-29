@@ -52,4 +52,9 @@
     <string name="text_me_wallet">钱包</string>
     <string name="text_me_set">设置</string>
     
+    <string name="text_addressbook_newFriend">新的朋友</string>
+    <string name="text_addressbook_groupChat">群聊</string>
+    <string name="text_addressbook_mark">标签</string>
+    <string name="text_addressbook_publicNumber">公众号</string>
+    
 </resources>

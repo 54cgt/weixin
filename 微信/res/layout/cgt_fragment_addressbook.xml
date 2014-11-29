@@ -3,13 +3,148 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white" >
+<!-- 
+    <LinearLayout
+        android:id="@+id/cgt_ll_addressbook_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/cgt_ll_addressbook_newFriend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cgt_selector_list_item_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="10dip"
+            android:paddingRight="30dip" >
+
+            <ImageView
+                android:layout_width="35dip"
+                android:layout_height="35dip"
+                android:layout_marginBottom="8dip"
+                android:layout_marginTop="8dip"
+                android:src="@drawable/cgt_addressbook_newfriend" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="@string/text_addressbook_newFriend"
+                android:textColor="@color/color_2e2e2e"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/cgt_v_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="30dip"
+            android:background="@color/color_d9d9d9" />
+
+        <LinearLayout
+            android:id="@+id/cgt_ll_addressbook_groupChat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cgt_selector_list_item_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="10dip"
+            android:paddingRight="30dip" >
+
+            <ImageView
+                android:layout_width="35dip"
+                android:layout_height="35dip"
+                android:layout_marginBottom="8dip"
+                android:layout_marginTop="8dip"
+                android:src="@drawable/cgt_addressbook_groupchat" />
+
+            <TextView
+                android:id="@+id/cgt_tv_userName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="@string/text_addressbook_groupChat"
+                android:textColor="@color/color_2e2e2e"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="30dip"
+            android:background="@color/color_d9d9d9" />
+
+        <LinearLayout
+            android:id="@+id/cgt_ll_addressbook_mark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cgt_selector_list_item_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="10dip"
+            android:paddingRight="30dip" >
+
+            <ImageView
+                android:layout_width="35dip"
+                android:layout_height="35dip"
+                android:layout_marginBottom="8dip"
+                android:layout_marginTop="8dip"
+                android:src="@drawable/cgt_addressbook_mark" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="@string/text_addressbook_mark"
+                android:textColor="@color/color_2e2e2e"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="30dip"
+            android:background="@color/color_d9d9d9" />
+
+        <LinearLayout
+            android:id="@+id/cgt_ll_addressbook_publicNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cgt_selector_list_item_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="10dip"
+            android:paddingRight="30dip" >
+
+            <ImageView
+                android:layout_width="35dip"
+                android:layout_height="35dip"
+                android:layout_marginBottom="8dip"
+                android:layout_marginTop="8dip"
+                android:src="@drawable/cgt_addressbook_publicnumber" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="@string/text_addressbook_publicNumber"
+                android:textColor="@color/color_2e2e2e"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout> -->
 
     <ExpandableListView
         android:id="@+id/cgt_elv_addressbook"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:divider="@null"
+        android:dividerHeight="0dip"
         android:groupIndicator="@null"
         android:scrollbars="none" />
 

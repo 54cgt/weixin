@@ -15,11 +15,11 @@
 
         <ImageView
             android:id="@+id/cgt_iv_userPhoto"
-            android:layout_width="50dip"
-            android:layout_height="50dip"
-            android:layout_marginBottom="10dip"
-            android:layout_marginTop="10dip"
-            android:src="@drawable/cgt_logo" />
+            android:layout_width="35dip"
+            android:layout_height="35dip"
+            android:layout_marginBottom="8dip"
+            android:layout_marginTop="8dip"
+            android:src="@drawable/user_picture" />
 
         <TextView
             android:id="@+id/cgt_tv_userName"
@@ -32,6 +32,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/cgt_v_line"
         android:layout_width="match_parent"
         android:layout_height="0.5dip"
         android:background="@color/color_d9d9d9" />
