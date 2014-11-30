@@ -64,16 +64,42 @@ public class PinyinAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
+//		if (groupPosition == 0) {
+//			return 4;
+//		}
 		return mAssortPinyinList.getHashList().getValueListThroughIndex(groupPosition).size();
 	}
 
 	@Override
 	public Object getGroup(int groupPosition) {
+//		if (groupPosition == 0) {
+//			List<User> mList_top = new ArrayList<User>();
+//			User user1 = new User();
+//			user1.setUserAccount(context.getResources().getString(R.string.text_addressbook_newFriend));
+//			user1.setUserPhote(String.valueOf(R.drawable.cgt_addressbook_newfriend));
+//			User user2 = new User();
+//			user2.setUserAccount(context.getResources().getString(R.string.text_addressbook_newFriend));
+//			user2.setUserPhote(String.valueOf(R.drawable.cgt_addressbook_newfriend));
+//			User user3 = new User();
+//			user3.setUserAccount(context.getResources().getString(R.string.text_addressbook_newFriend));
+//			user3.setUserPhote(String.valueOf(R.drawable.cgt_addressbook_newfriend));
+//			User user4 = new User();
+//			user4.setUserAccount(context.getResources().getString(R.string.text_addressbook_newFriend));
+//			user4.setUserPhote(String.valueOf(R.drawable.cgt_addressbook_newfriend));
+//			mList_top.add(user1);
+//			mList_top.add(user2);
+//			mList_top.add(user3);
+//			mList_top.add(user4);
+//			return mList_top;
+//		}
 		return mAssortPinyinList.getHashList().getValueListThroughIndex(groupPosition);
 	}
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
+//		if (groupPosition == 0) {
+//			return ((List<User>) getGroup(0)).get(childPosition);
+//		}
 		return mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, childPosition);
 	}
 
@@ -108,7 +134,13 @@ public class PinyinAdapter extends BaseExpandableListAdapter {
 			convertView.setClickable(true);//设置是否可以点击伸展
 		}
 		TextView mTv_addressbook_group_item = (TextView) convertView.findViewById(R.id.cgt_tv_addressbook_group_item);
-		mTv_addressbook_group_item.setText(mAssortPinyinList.getFirstChar(mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, 0)));
+		if (groupPosition == 0) {
+			mTv_addressbook_group_item.setText("↑");
+			mTv_addressbook_group_item.setVisibility(View.GONE);
+		}else{
+			mTv_addressbook_group_item.setText(mAssortPinyinList.getFirstChar(mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, 0)));
+			mTv_addressbook_group_item.setVisibility(View.VISIBLE);
+		}
 
 		return convertView;
 	}
@@ -121,8 +153,32 @@ public class PinyinAdapter extends BaseExpandableListAdapter {
 		TextView mTv_userName = (TextView) convertView.findViewById(R.id.cgt_tv_userName);
 		ImageView mIv_userPhoto = (ImageView) convertView.findViewById(R.id.cgt_iv_userPhoto);
 		View mV_line = convertView.findViewById(R.id.cgt_v_line);
-		mTv_userName.setText(mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, childPosition).getUserAccount());
-		mIv_userPhoto.setImageResource(Integer.parseInt(mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, childPosition).getUserPhote()));
+		if(groupPosition==0){
+			switch (childPosition) {
+			case 0:
+				mTv_userName.setText(context.getResources().getString(R.string.text_addressbook_newFriend));
+				mIv_userPhoto.setImageResource(R.drawable.cgt_addressbook_newfriend);
+				break;
+			case 1:
+				mTv_userName.setText(context.getResources().getString(R.string.text_addressbook_groupChat));
+				mIv_userPhoto.setImageResource(R.drawable.cgt_addressbook_groupchat);
+				break;
+			case 2:
+				mTv_userName.setText(context.getResources().getString(R.string.text_addressbook_mark));
+				mIv_userPhoto.setImageResource(R.drawable.cgt_addressbook_mark);
+				break;
+			case 3:
+				mTv_userName.setText(context.getResources().getString(R.string.text_addressbook_publicNumber));
+				mIv_userPhoto.setImageResource(R.drawable.cgt_addressbook_publicnumber);
+				break;
+
+			default:
+				break;
+			}
+		}else{
+			mTv_userName.setText(mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, childPosition).getUserAccount());
+			mIv_userPhoto.setImageResource(Integer.parseInt(mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, childPosition).getUserPhote()));
+		}
 		if (isLastChild) {
 			mV_line.setVisibility(View.GONE);
 		} else {

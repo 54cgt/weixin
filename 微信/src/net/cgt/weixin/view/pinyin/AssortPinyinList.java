@@ -44,6 +44,8 @@ public class AssortPinyinList {
 			}
 			if (firstChar >= 65 && firstChar <= 90) {//大写字母
 				first = String.valueOf(firstChar);
+			} else if (firstChar == 32) {
+				first = "↑";
 			} else {
 				// 认为首字符为数字或者特殊字符
 				first = "#";

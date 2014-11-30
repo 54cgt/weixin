@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import net.cgt.weixin.domain.User;
 import net.cgt.weixin.utils.L;
 import net.cgt.weixin.utils.LogUtil;
 
@@ -190,13 +191,13 @@ public class HashList<K, V> {
 		K key = getKey(v);
 		if (!mMap.containsKey(key)) {
 			List<V> list = new ArrayList<V>();
-			L.i(LOGTAG, "HashList--->key=" + key + "--------------------Value=" + v);
+			L.i(LOGTAG, "HashList--->key=" + key + "--------------------Value=" + ((User)v).getUserAccount());
 			list.add(v);
 			mList_key.add(key);
 			mMap.put(key, list);
 		} else {
 			mMap.get(key).add(v);
-			L.i(LOGTAG, "HashList--->key=" + key + "---V=" + v);
+			L.i(LOGTAG, "HashList--->key=" + key + "---V=" + ((User)v).getUserAccount());
 		}
 		return false;
 	}

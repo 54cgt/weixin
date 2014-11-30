@@ -43,6 +43,14 @@ public class LanguageComparator_CN<T> implements Comparator<T> {
 			int codePoint1 = ostr1.charAt(i);
 			int codePoint2 = ostr2.charAt(i);
 
+			if (codePoint1 == '↑') {//处理将↑放置到最前
+				codePoint1 = 1;
+			}
+
+			if (codePoint2 == '↑') {//处理将↑放置到最前
+				codePoint2 = 1;
+			}
+			
 			if (codePoint1 == 35) {//处理将#放置到最后
 				codePoint1 = codePoint1 + 100;
 			}
@@ -90,10 +98,18 @@ public class LanguageComparator_CN<T> implements Comparator<T> {
 			int codePoint1 = user1.getUserAccount().charAt(i);
 			int codePoint2 = user2.getUserAccount().charAt(i);
 
+			if (codePoint1 == '↑') {//处理将↑放置到最前
+				codePoint1 = 1;
+			}
+
+			if (codePoint2 == '↑') {//处理将↑放置到最前
+				codePoint2 = 1;
+			}
+			
 			if (codePoint1 == 35) {//处理将#放置到最后
 				codePoint1 = codePoint1 + 100;
 			}
-
+			
 			if (codePoint2 == 35) {//处理将#放置到最后
 				codePoint2 = codePoint2 + 100;
 			}

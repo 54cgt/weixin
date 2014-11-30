@@ -150,6 +150,10 @@ public class AddressBookFragment extends BaseFragment /*implements OnClickListen
 		mItems.add("袁冠南");
 		mItems.add("연 일곱");
 		mItems.add("먹");
+//		mItems.add(" 新的朋友");
+//		mItems.add(" 群聊");
+//		mItems.add(" 标签");
+//		mItems.add(" 公众号");
 
 		Collections.sort(mItems);
 
@@ -165,6 +169,28 @@ public class AddressBookFragment extends BaseFragment /*implements OnClickListen
 
 			mList.add(user);
 		}
+		
+//		List<User> mList_top = new ArrayList<User>();
+		User user1 = new User();
+		user1.setUserAccount("    新的朋友");
+		user1.setUserPhote(String.valueOf(R.drawable.cgt_addressbook_newfriend));
+		User user2 = new User();
+		user2.setUserAccount("   群聊");
+		user2.setUserPhote(String.valueOf(R.drawable.cgt_addressbook_groupchat));
+		User user3 = new User();
+		user3.setUserAccount("  标签");
+		user3.setUserPhote(String.valueOf(R.drawable.cgt_addressbook_mark));
+		User user4 = new User();
+		user4.setUserAccount(" 公众号");
+		user4.setUserPhote(String.valueOf(R.drawable.cgt_addressbook_publicnumber));
+//		mList_top.add(user1);
+//		mList_top.add(user2);
+//		mList_top.add(user3);
+//		mList_top.add(user4);
+		mList.add(user1);
+		mList.add(user2);
+		mList.add(user3);
+		mList.add(user4);
 
 		if (adapter == null) {
 			adapter = new PinyinAdapter(GlobalParams.activity, mList);
