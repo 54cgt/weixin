@@ -12,15 +12,22 @@
     <color name="color_dddddd">#dddddd</color>
     <color name="color_888888">#888888</color>
     <color name="color_999999">#999999</color>
+    <color name="color_aaaaaa">#aaaaaa</color>
     <color name="color_45c01a">#45c01a</color>
+    <color name="color_298409">#298409</color>
+    <color name="color_f5f5f5">#f5f5f5</color>
+    <color name="color_fbfbfb">#fbfbfb</color>
     <color name="color_4d4d4d">#4d4d4d</color>
     <color name="color_cccccc">#cccccc</color>
     <color name="color_fdfdfd">#fdfdfd</color>
     <color name="color_22292c">#22292c</color>
+    <color name="color_3cac17">#3cac17</color>
     <color name="color_ebebeb">#ebebeb</color>
     <color name="color_353535">#353535</color>
     <color name="color_d9d9d9">#d9d9d9</color>
     <color name="color_b1b1b1">#b1b1b1</color>
+    <color name="color_5c5c5c">#5c5c5c</color>
+    <color name="color_bcbcbc">#bcbcbc</color>
     <color name="color_transparent_aa4a4a4a">#aa4a4a4a</color>
     <color name="color_transparent_88000000">#88000000</color>
 

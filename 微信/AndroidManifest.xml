@@ -34,6 +34,10 @@
         </activity>
         <activity android:name="net.cgt.weixin.activity.LoginActivity" >
         </activity>
+        <activity android:name="net.cgt.weixin.activity.UserDetailedInfo" >
+        </activity>
+        <activity android:name="net.cgt.weixin.activity.GalleryImageActivity" >
+        </activity>
     </application>
 
 </manifest>

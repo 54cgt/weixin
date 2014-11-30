@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_fbfbfb"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/cgt_tv_item_alert_dialog_userName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dip"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="15dip"
+        android:text="李建"
+        android:textColor="@color/color_3cac17"
+        android:textSize="22sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.0dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@color/color_bcbcbc" />
+
+    <TextView
+        android:id="@+id/cgt_tv_item_alert_dialog_click"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@drawable/cgt_selector_list_item_bg"
+        android:gravity="left"
+        android:paddingBottom="12dip"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:paddingTop="12dip"
+        android:text="设置备注及标签"
+        android:textColor="@color/color_353535"
+        android:textSize="16sp" />
+
+</LinearLayout>

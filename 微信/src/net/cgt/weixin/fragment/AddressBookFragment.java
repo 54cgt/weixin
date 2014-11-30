@@ -6,19 +6,26 @@ import java.util.List;
 
 import net.cgt.weixin.GlobalParams;
 import net.cgt.weixin.R;
+import net.cgt.weixin.activity.UserDetailedInfo;
 import net.cgt.weixin.domain.User;
+import net.cgt.weixin.utils.AppToast;
 import net.cgt.weixin.utils.DensityUtil;
 import net.cgt.weixin.utils.LogUtil;
 import net.cgt.weixin.view.adapter.PinyinAdapter;
 import net.cgt.weixin.view.pinyin.AssortView;
 import net.cgt.weixin.view.pinyin.AssortView.OnTouchAssortListener;
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -28,20 +35,17 @@ import android.widget.TextView;
  * @author lijian-pc
  * @date 2014-11-27
  */
-public class AddressBookFragment extends BaseFragment /*implements OnClickListener */{
+public class AddressBookFragment extends BaseFragment implements OnItemLongClickListener, OnChildClickListener {
 
 	private static final String LOGTAG = LogUtil.makeLogTag(AddressBookFragment.class);
 
-//	private LinearLayout mLl_addressbook_top;
 	private ExpandableListView mElv_addressbook;
-//	private LinearLayout mLl_addressbook_newFriend;
-//	private LinearLayout mLl_addressbook_groupChat;
-//	private LinearLayout mLl_addressbook_mark;
-//	private LinearLayout mLl_addressbook_publicNumber;
 
 	private AssortView mAv_addressbook_right;
 	private PinyinAdapter adapter;
 	private PopupWindow popupWindow;
+
+	private List<User> mList;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,19 +60,11 @@ public class AddressBookFragment extends BaseFragment /*implements OnClickListen
 	}
 
 	private void initView(View v) {
-//		mLl_addressbook_top = (LinearLayout) v.findViewById(R.id.cgt_ll_addressbook_top);
 		mElv_addressbook = (ExpandableListView) v.findViewById(R.id.cgt_elv_addressbook);
 		mAv_addressbook_right = (AssortView) v.findViewById(R.id.cgt_av_addressbook_right);
 
-//		mLl_addressbook_newFriend = (LinearLayout) v.findViewById(R.id.cgt_ll_addressbook_newFriend);
-//		mLl_addressbook_groupChat = (LinearLayout) v.findViewById(R.id.cgt_ll_addressbook_groupChat);
-//		mLl_addressbook_mark = (LinearLayout) v.findViewById(R.id.cgt_ll_addressbook_mark);
-//		mLl_addressbook_publicNumber = (LinearLayout) v.findViewById(R.id.cgt_ll_addressbook_publicNumber);
-//
-//		mLl_addressbook_newFriend.setOnClickListener(this);
-//		mLl_addressbook_groupChat.setOnClickListener(this);
-//		mLl_addressbook_mark.setOnClickListener(this);
-//		mLl_addressbook_publicNumber.setOnClickListener(this);
+		mElv_addressbook.setOnItemLongClickListener(this);
+		mElv_addressbook.setOnChildClickListener(this);
 	}
 
 	private void initData() {
@@ -150,14 +146,10 @@ public class AddressBookFragment extends BaseFragment /*implements OnClickListen
 		mItems.add("袁冠南");
 		mItems.add("연 일곱");
 		mItems.add("먹");
-//		mItems.add(" 新的朋友");
-//		mItems.add(" 群聊");
-//		mItems.add(" 标签");
-//		mItems.add(" 公众号");
 
 		Collections.sort(mItems);
 
-		List<User> mList = new ArrayList<User>();
+		mList = new ArrayList<User>();
 		for (int i = 0; i < mItems.size(); i++) {
 			User user = new User();
 			user.setUserAccount(mItems.get(i));
@@ -169,24 +161,19 @@ public class AddressBookFragment extends BaseFragment /*implements OnClickListen
 
 			mList.add(user);
 		}
-		
-//		List<User> mList_top = new ArrayList<User>();
+
 		User user1 = new User();
-		user1.setUserAccount("    新的朋友");
+		user1.setUserAccount(" 1新的朋友");
 		user1.setUserPhote(String.valueOf(R.drawable.cgt_addressbook_newfriend));
 		User user2 = new User();
-		user2.setUserAccount("   群聊");
+		user2.setUserAccount(" 2群聊");
 		user2.setUserPhote(String.valueOf(R.drawable.cgt_addressbook_groupchat));
 		User user3 = new User();
-		user3.setUserAccount("  标签");
+		user3.setUserAccount(" 3标签");
 		user3.setUserPhote(String.valueOf(R.drawable.cgt_addressbook_mark));
 		User user4 = new User();
-		user4.setUserAccount(" 公众号");
+		user4.setUserAccount(" 4公众号");
 		user4.setUserPhote(String.valueOf(R.drawable.cgt_addressbook_publicnumber));
-//		mList_top.add(user1);
-//		mList_top.add(user2);
-//		mList_top.add(user3);
-//		mList_top.add(user4);
 		mList.add(user1);
 		mList.add(user2);
 		mList.add(user3);
@@ -212,11 +199,6 @@ public class AddressBookFragment extends BaseFragment /*implements OnClickListen
 
 			@Override
 			public void onTouchAssortListener(String str) {
-				//				if (str.equals("↑")) {
-				//					mLl_addressbook_top.setVisibility(View.VISIBLE);
-				//				} else {
-				//					mLl_addressbook_top.setVisibility(View.GONE);
-				//				}
 				int index = adapter.getAssort().getHashList().indexOfKey(str);
 				if (index != -1) {
 					mElv_addressbook.setSelectedGroup(index);
@@ -259,28 +241,64 @@ public class AddressBookFragment extends BaseFragment /*implements OnClickListen
 		super.onDestroy();
 	}
 
-//	@Override
-//	public void onClick(View v) {
-//		switch (v.getId()) {
-//		case R.id.cgt_ll_addressbook_newFriend:
-//			L.i(LOGTAG, "新的朋友");
-//			AppToast.getToast().show(R.string.text_addressbook_newFriend);
-//			break;
-//		case R.id.cgt_ll_addressbook_groupChat:
-//			L.i(LOGTAG, "群聊");
-//			AppToast.getToast().show(R.string.text_addressbook_groupChat);
-//			break;
-//		case R.id.cgt_ll_addressbook_mark:
-//			L.i(LOGTAG, "标签");
-//			AppToast.getToast().show(R.string.text_addressbook_mark);
-//			break;
-//		case R.id.cgt_ll_addressbook_publicNumber:
-//			L.i(LOGTAG, "公众号");
-//			AppToast.getToast().show(R.string.text_addressbook_publicNumber);
-//			break;
-//
-//		default:
-//			break;
-//		}
-//	}
+	@Override
+	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+		if (groupPosition == 0) {
+			switch (childPosition) {
+			case 0:
+				AppToast.getToast().show(R.string.text_addressbook_newFriend);
+				break;
+			case 1:
+				AppToast.getToast().show(R.string.text_addressbook_groupChat);
+				break;
+			case 2:
+				AppToast.getToast().show(R.string.text_addressbook_mark);
+				break;
+			case 3:
+				AppToast.getToast().show(R.string.text_addressbook_publicNumber);
+				break;
+			default:
+				break;
+			}
+		} else {
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), UserDetailedInfo.class);
+			Bundle bundle = new Bundle();
+			bundle.putParcelable("user", (User) adapter.getChild(groupPosition, childPosition));
+			intent.putExtras(bundle);
+			startActivity(intent);
+			AppToast.getToast().show(((User) adapter.getChild(groupPosition, childPosition)).getUserAccount());
+		}
+		return false;
+	}
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+		int groupPosition = (Integer) view.getTag(R.id.cgt_tv_addressbook_content);
+		int childPosition = (Integer) view.getTag(R.id.cgt_tv_addressbook_group_item);
+
+		if (childPosition != -1) {
+			String userName = ((User) adapter.getChild(groupPosition, childPosition)).getUserAccount();
+			AppToast.getToast().show(userName);
+
+			Dialog dialog = new Dialog(getActivity());
+			dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+			dialog.setCancelable(true);
+			View v = View.inflate(getActivity(), R.layout.cgt_layout_addressbook_item_alert_dialog, null);
+			TextView mTv_item_alert_dialog_userName = (TextView) v.findViewById(R.id.cgt_tv_item_alert_dialog_userName);
+			TextView mTv_item_alert_dialog_click = (TextView) v.findViewById(R.id.cgt_tv_item_alert_dialog_click);
+			mTv_item_alert_dialog_userName.setText(userName);
+			mTv_item_alert_dialog_click.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					AppToast.getToast().show("设置标签及备注");
+				}
+			});
+			dialog.setContentView(v);
+			dialog.show();
+		}
+		return true;//设置为true,长点击完后,消耗该事件
+	}
 }

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_ebebeb"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/cgt_iv_userDetailedInfo_userPhoto"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_margin="15dip"
+            android:src="@drawable/user_picture" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/cgt_tv_userDetailedInfo_userName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="李建"
+                    android:textColor="@color/color_353535"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/cgt_iv_userDetailedInfo_userSex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dip"
+                    android:src="@drawable/cgt_icon_men" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/cgt_tv_userDetailedInfo_userWeixin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="微信号:lijian374452668"
+                android:textColor="@color/color_aaaaaa"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/cgt_tv_userDetailedInfo_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="昵称:深情小建"
+                android:textColor="@color/color_aaaaaa"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cgt_selector_find_item_bg"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip" >
+
+            <TextView
+                android:layout_width="90dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dip"
+                android:text="地区"
+                android:textColor="@color/color_353535"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/cgt_tv_userDetailedInfo_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="北京  昌平"
+                android:textColor="@color/color_aaaaaa"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="@color/color_d9d9d9" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cgt_selector_find_item_bg"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip" >
+
+            <TextView
+                android:layout_width="90dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dip"
+                android:text="个性签名"
+                android:textColor="@color/color_353535"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/cgt_tv_userDetailedInfo_personalizedSignature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="人潮人海,有你有我"
+                android:textColor="@color/color_aaaaaa"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="@color/color_d9d9d9" />
+
+        <LinearLayout
+            android:id="@+id/cgt_ll_userDetailedInfo_personalPhoto_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cgt_selector_find_item_bg"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="8dip"
+            android:paddingTop="8dip" >
+
+            <TextView
+                android:layout_width="90dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dip"
+                android:text="个人相册"
+                android:textColor="@color/color_353535"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:id="@+id/cgt_ll_userDetailedInfo_personalPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="60dip"
+                    android:layout_height="60dip"
+                    android:layout_marginRight="5dip"
+                    android:src="@drawable/user_picture" />
+
+                <ImageView
+                    android:layout_width="60dip"
+                    android:layout_height="60dip"
+                    android:layout_marginRight="5dip"
+                    android:src="@drawable/user_picture" />
+
+                <ImageView
+                    android:layout_width="60dip"
+                    android:layout_height="60dip"
+                    android:src="@drawable/user_picture" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="@color/color_d9d9d9" />
+
+        <LinearLayout
+            android:id="@+id/cgt_ll_userDetailedInfo_socialInfo_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cgt_selector_find_item_bg"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip" >
+
+            <TextView
+                android:layout_width="90dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dip"
+                android:text="社交资料"
+                android:textColor="@color/color_353535"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:id="@+id/cgt_ll_userDetailedInfo_socialInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dip"
+                    android:src="@drawable/cgt_icon_phone" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/cgt_btn_userDetailedInfo_sendMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="20dip"
+        android:background="@drawable/cgt_selector_userdetailedinfo_sendmsg_bg"
+        android:gravity="center"
+        android:text="发消息"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/cgt_btn_userDetailedInfo_videoChat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="10dip"
+        android:background="@drawable/cgt_selector_userdetailedinfo_videochat_bg"
+        android:gravity="center"
+        android:text="视频聊天"
+        android:textColor="@color/color_5c5c5c" />
+
+</LinearLayout>
