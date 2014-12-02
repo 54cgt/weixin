@@ -9,7 +9,8 @@ public class AppDialog extends Dialog {
 
 	private Context mContext;
 
-	protected AppDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+	protected AppDialog(Context context, boolean cancelable,
+			OnCancelListener cancelListener) {
 		super(context, cancelable, cancelListener);
 		this.mContext = context;
 	}
@@ -28,6 +29,20 @@ public class AppDialog extends Dialog {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog);
+		init();
+	}
+
+	private void init() {
+		initView();
+		initData();
+	}
+
+	private void initView() {
+	}
+
+	private void initData() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

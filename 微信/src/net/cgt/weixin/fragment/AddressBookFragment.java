@@ -17,11 +17,15 @@ import net.cgt.weixin.view.pinyin.AssortView.OnTouchAssortListener;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ExpandableListView;
@@ -282,10 +286,8 @@ public class AddressBookFragment extends BaseFragment implements OnItemLongClick
 			String userName = ((User) adapter.getChild(groupPosition, childPosition)).getUserAccount();
 			AppToast.getToast().show(userName);
 
-			Dialog dialog = new Dialog(getActivity());
-			dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-			dialog.setCancelable(true);
-			View v = View.inflate(getActivity(), R.layout.cgt_layout_addressbook_item_alert_dialog, null);
+			final Dialog dialog = new Dialog(getActivity(),R.style.cgt_dialog);
+			View v = View.inflate(getActivity(), R.layout.cgt_layout_addressbook_item_alert_dialog,null);
 			TextView mTv_item_alert_dialog_userName = (TextView) v.findViewById(R.id.cgt_tv_item_alert_dialog_userName);
 			TextView mTv_item_alert_dialog_click = (TextView) v.findViewById(R.id.cgt_tv_item_alert_dialog_click);
 			mTv_item_alert_dialog_userName.setText(userName);
@@ -294,10 +296,22 @@ public class AddressBookFragment extends BaseFragment implements OnItemLongClick
 				@Override
 				public void onClick(View v) {
 					AppToast.getToast().show("设置标签及备注");
+					
+					dialog.cancel();
 				}
 			});
+			
+			dialog.setCancelable(true);
 			dialog.setContentView(v);
 			dialog.show();
+			
+			Window dialogWindow  = dialog.getWindow();
+	        WindowManager m = getActivity().getWindowManager();
+	        Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+	        WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+			// p.height = (int) (d.getHeight() * 0.6); // 高度设置为屏幕的0.6
+			p.width = (int) (d.getWidth() * 0.8); // 宽度设置为屏幕的0.65
+	        dialogWindow.setAttributes(p);
 		}
 		return true;//设置为true,长点击完后,消耗该事件
 	}
