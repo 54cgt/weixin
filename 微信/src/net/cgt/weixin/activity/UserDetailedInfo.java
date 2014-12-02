@@ -1,10 +1,18 @@
 package net.cgt.weixin.activity;
 
+import java.lang.reflect.Method;
+
 import net.cgt.weixin.R;
 import net.cgt.weixin.domain.User;
+import net.cgt.weixin.utils.AppToast;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -99,5 +107,71 @@ public class UserDetailedInfo extends BaseActivity implements OnClickListener {
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.cgt_menu_userdetailedinfo, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home://返回上一菜单页
+			AppToast.getToast().show("返回上一页");
+			Intent upIntent = NavUtils.getParentActivityIntent(this);
+			if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+				TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
+			} else {
+				upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				NavUtils.navigateUpTo(this, upIntent);
+			}
+			break;
+		case R.id.menu_userDetailedInfo_pencil:
+			AppToast.getToast().show(R.string.text_menu_userDetailedInfo_pencil);
+			break;
+		case R.id.menu_userDetailedInfo_stars:
+			AppToast.getToast().show(R.string.text_menu_userDetailedInfo_stars);
+			break;
+		case R.id.menu_userDetailedInfo_jurisdiction:
+			AppToast.getToast().show(R.string.text_menu_userDetailedInfo_jurisdiction);
+			break;
+		case R.id.menu_userDetailedInfo_forward:
+			AppToast.getToast().show(R.string.text_menu_userDetailedInfo_forward);
+			break;
+		case R.id.menu_userDetailedInfo_blacklist:
+			AppToast.getToast().show(R.string.text_menu_userDetailedInfo_blacklist);
+			break;
+		case R.id.menu_userDetailedInfo_delete:
+			AppToast.getToast().show(R.string.text_menu_userDetailedInfo_delete);
+			break;
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * overflow被展开的时候调用
+	 * 
+	 * @param featureId
+	 * @param menu
+	 * @return
+	 */
+	@Override
+	public boolean onMenuOpened(int featureId, Menu menu) {
+		//通过返回反射的方法将MenuBuilder的setOptionalIconsVisible变量设置为true
+		if (featureId == Window.FEATURE_ACTION_BAR && menu != null) {
+			if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
+				try {
+					Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+					m.setAccessible(true);
+					m.invoke(menu, true);
+				} catch (Exception e) {
+				}
+			}
+		}
+		return super.onMenuOpened(featureId, menu);
 	}
 }

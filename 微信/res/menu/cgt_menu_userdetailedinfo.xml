@@ -1,0 +1,40 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_userDetailedInfo_pencil"
+        android:icon="@drawable/cgt_menu_pencil"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/text_menu_userDetailedInfo_pencil"/>
+    <item
+        android:id="@+id/menu_userDetailedInfo_stars"
+        android:icon="@drawable/cgt_menu_stars"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/text_menu_userDetailedInfo_stars"/>
+    <item
+        android:id="@+id/menu_userDetailedInfo_jurisdiction"
+        android:icon="@drawable/cgt_menu_jurisdiction"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/text_menu_userDetailedInfo_jurisdiction"/>
+    <item
+        android:id="@+id/menu_userDetailedInfo_forward"
+        android:icon="@drawable/cgt_menu_forward"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/text_menu_userDetailedInfo_forward"/>
+    <item
+        android:id="@+id/menu_userDetailedInfo_blacklist"
+        android:icon="@drawable/cgt_menu_blacklist"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/text_menu_userDetailedInfo_blacklist"/>
+    <item
+        android:id="@+id/menu_userDetailedInfo_delete"
+        android:icon="@drawable/cgt_menu_delete"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/text_menu_userDetailedInfo_delete"/>
+
+</menu>

@@ -39,6 +39,14 @@
     <string name="text_menu_weixin_sweep">扫一扫</string>
     <string name="text_menu_weixin_feedback">意见反馈</string>
     
+    <string name="text_menu_userDetailedInfo_pencil">设置备注及标签</string>
+    <string name="text_menu_userDetailedInfo_stars">标为星标朋友</string>
+    <string name="text_menu_userDetailedInfo_jurisdiction">设置朋友圈权限</string>
+    <string name="text_menu_userDetailedInfo_forward">发送该名片</string>
+    <string name="text_menu_userDetailedInfo_blacklist">加入黑名单</string>
+    <string name="text_menu_userDetailedInfo_delete">删除</string>
+    <string name="text_menu_userDetailedInfo_addTodesktop">添加到桌面</string>
+    
     <string name="text_find_friends">朋友圈</string>
     <string name="text_find_sweep">扫一扫</string>
     <string name="text_find_shake">摇一摇</string>
