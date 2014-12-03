@@ -1,10 +1,12 @@
 package net.cgt.weixin.activity;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import net.cgt.weixin.R;
 import net.cgt.weixin.domain.User;
 import net.cgt.weixin.utils.AppToast;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -12,6 +14,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -57,6 +60,10 @@ public class UserDetailedInfo extends BaseActivity implements OnClickListener {
 	}
 
 	private void initView() {
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		setOverflowShowingAlways();
+		
 		mIv_userPhoto = (ImageView) findViewById(R.id.cgt_iv_userDetailedInfo_userPhoto);
 		mTv_userName = (TextView) findViewById(R.id.cgt_tv_userDetailedInfo_userName);
 		mIv_userSex = (ImageView) findViewById(R.id.cgt_iv_userDetailedInfo_userSex);
@@ -153,7 +160,8 @@ public class UserDetailedInfo extends BaseActivity implements OnClickListener {
 	}
 
 	/**
-	 * overflow被展开的时候调用
+	 * overflow被展开的时候调用<br>
+	 * onMenuOpened()方法用于让隐藏在overflow当中的Action按钮的图标显示出来
 	 * 
 	 * @param featureId
 	 * @param menu
@@ -173,5 +181,20 @@ public class UserDetailedInfo extends BaseActivity implements OnClickListener {
 			}
 		}
 		return super.onMenuOpened(featureId, menu);
+	}
+
+	/**
+	 * 通过反射得到Android的有无物理Menu键<br>
+	 * setOverflowShowingAlways()方法则是屏蔽掉物理Menu键，不然在有物理Menu键的手机上，overflow按钮会显示不出来
+	 */
+	private void setOverflowShowingAlways() {
+		try {
+			ViewConfiguration config = ViewConfiguration.get(this);
+			Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+			menuKeyField.setAccessible(true);
+			menuKeyField.setBoolean(config, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
