@@ -35,9 +35,7 @@
         <activity android:name="net.cgt.weixin.activity.LoginActivity" >
         </activity>
         <activity
-            android:name="net.cgt.weixin.activity.UserDetailedInfo"
-            android:icon="@drawable/cgt_menu_return_nor"
-            android:label="详细资料" >
+            android:name="net.cgt.weixin.activity.UserDetailedInfo" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.cgt.weixin.activity.MainActivity" />

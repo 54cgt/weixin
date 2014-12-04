@@ -73,7 +73,8 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 
 	private void initView() {
 		ActionBar actionBar = this.getActionBar();
-		actionBar.setDisplayUseLogoEnabled(false);
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(true);
 		setOverflowShowingAlways();
 
 		mFragmentManager = getFragmentManager();

@@ -8,15 +8,17 @@ import net.cgt.weixin.domain.User;
 import net.cgt.weixin.utils.AppToast;
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewConfiguration;
 import android.view.Window;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,6 +64,8 @@ public class UserDetailedInfo extends BaseActivity implements OnClickListener {
 	private void initView() {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(true);
 		setOverflowShowingAlways();
 		
 		mIv_userPhoto = (ImageView) findViewById(R.id.cgt_iv_userDetailedInfo_userPhoto);
@@ -119,7 +123,30 @@ public class UserDetailedInfo extends BaseActivity implements OnClickListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.cgt_menu_userdetailedinfo, menu);
+		menu.add(Menu.NONE, Menu.FIRST + 1, 100, R.string.text_menu_userDetailedInfo_addTodesktop).setIcon(android.R.drawable.ic_menu_send);
 		return super.onCreateOptionsMenu(menu);
+	}
+	
+	private View getPhote(){
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		//获取这个图片的宽和高
+		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), Integer.parseInt(user.getUserPhote()));
+		options.inJustDecodeBounds = false;
+		//计算缩放比例
+		int be = (int)(options.outHeight/(float)200);
+		if(be<=0){
+			be = 1;
+		}
+		options.inSampleSize = be;
+		//重新读入图片，注意这次要把options.inJustDecodeBounds 设为 false
+		bitmap = BitmapFactory.decodeResource(getResources(), Integer.parseInt(user.getUserPhote()));
+		int w = bitmap.getWidth();
+		int h = bitmap.getHeight();
+		System.out.println(w + "   " + h);
+		ImageView iv = new ImageView(this);
+		iv.setImageBitmap(bitmap);
+		return iv;
 	}
 
 	@Override
@@ -152,6 +179,9 @@ public class UserDetailedInfo extends BaseActivity implements OnClickListener {
 			break;
 		case R.id.menu_userDetailedInfo_delete:
 			AppToast.getToast().show(R.string.text_menu_userDetailedInfo_delete);
+			break;
+		case Menu.FIRST + 1:
+			AppToast.getToast().show(R.string.text_menu_userDetailedInfo_addTodesktop);
 			break;
 		default:
 			break;

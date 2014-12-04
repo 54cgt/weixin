@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -18,16 +18,21 @@
     </style>
     
     <style name="CustomActionBarTheme" parent="@android:style/Theme.Holo">
-        <item name="android:actionBarStyle">@style/cgt_actionBar</item>
+        <item name="android:actionBarStyle">@style/cgt_actionBar</item><!-- actionBar样式 -->
         <!-- <item name="android:actionDropDownStyle">@style/cgt_actionDropDown</item> -->
-        <item name="android:actionBarItemBackground">@drawable/cgt_selector_actionbar_item_bg</item> 
-        <item name="android:itemBackground">@drawable/cgt_selector_actionbar_item_bg</item>
+        <item name="android:actionBarItemBackground">@drawable/cgt_selector_actionbar_actionbaritem_bg</item> <!-- actionBar背景点击效果 -->
+        <item name="android:itemBackground">@drawable/cgt_selector_actionbar_overflowitem_bg</item><!-- Overflow的item背景点击效果 -->
+        <item name="android:homeAsUpIndicator">@drawable/cgt_selector_actionbar_homeasupindicator_bg</item><!-- 返回箭头 -->
+        <item name="android:windowContentOverlay">@android:drawable/divider_horizontal_dark</item>
+        <item name="android:actionBarDivider">@drawable/cgt_menu_delete</item>
         
-        <!-- 这是items的颜色变化，未选中时为白色，选中时为绿色，逻辑请见ad_selectable_background.xml -->  
-        <!-- <item name="android:selectableItemBackground">@drawable/ad_selectable_background</item> -->  
-        <!-- 其他部分的颜色变化跟上面类似 -->  
-        <!-- <item name="android:popupMenuStyle">@style/MyPopupMenu</item> -->  
-        <!-- <item name="android:dropDownListViewStyle">@style/MyDropDownListView</item> -->  
+        
+        <!-- Overflow的item之间的分隔线 -->
+        <!-- <item name="android:divider">@android:drawable/divider_horizontal_dark</item>
+        <item name="android:dividerHeight">15dip</item> -->
+        
+        <!-- <item name="android:popupMenuStyle">@style/MyPopupMenu</item> --><!-- Overflow背景色 -->
+        <!-- <item name="android:dropDownListViewStyle">@style/MyDropDownListView</item> --><!-- Overflow的item背景点击移动后效果 -->
         <!-- <item name="android:actionBarTabStyle">@style/MyActionBarTabStyle</item> -->  
         <!-- <item name="android:actionDropDownStyle">@style/MyDropDownNav</item> -->  
         <!-- <item name="android:listChoiceIndicatorMultiple">@drawable/ad_btn_check_holo_light</item> -->  
@@ -36,7 +41,7 @@
     </style>
     
     <style name="cgt_actionBar" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">@color/color_22292c</item>
+        <item name="android:background">@color/color_22292c</item><!-- actionBar背景 -->
     </style>
     
     <style name="cgt_actionDropDown" parent="@android:style/Widget.Holo.DropDownItem">
@@ -44,14 +49,15 @@
     </style>
     
     <!-- style the overflow menu -->  
-    <!-- <style name="MyPopupMenu" parent="android:style/Widget.Holo.Light.ListPopupWindow">  
-        <item name="android:popupBackground">@drawable/ad_menu_dropdown_panel_holo_light</item>   
-    </style> -->  
+    <style name="MyPopupMenu" parent="@android:style/Widget.ListPopupWindow">
+        <item name="android:popupBackground">@color/color_22292c</item>
+        <item name="android:dropDownHorizontalOffset">-10dip</item><!-- 没效果  -->
+    </style>
       
     <!-- style the items within the overflow menu -->  
-    <!-- <style name="MyDropDownListView" parent="android:style/Widget.Holo.ListView.DropDown">  
-        <item name="android:listSelector">@drawable/ad_selectable_background</item>  
-    </style> -->  
+    <!-- <style name="MyDropDownListView" parent="@android:style/Widget.Holo.ListView.DropDown">  
+        <item name="android:listSelector">@drawable/cgt_selector_actionbar_overflowitem_bg</item>  
+    </style> -->
   
     <!-- style for the tabs -->  
     <!-- <style name="MyActionBarTabStyle" parent="android:style/Widget.Holo.Light.ActionBarView_TabView">  
