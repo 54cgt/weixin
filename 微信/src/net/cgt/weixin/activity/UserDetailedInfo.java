@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 import net.cgt.weixin.R;
 import net.cgt.weixin.domain.User;
 import net.cgt.weixin.utils.AppToast;
+import net.cgt.weixin.utils.L;
+import net.cgt.weixin.utils.LogUtil;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,6 +33,8 @@ import android.widget.TextView;
  * @date 2014-11-30
  */
 public class UserDetailedInfo extends BaseActivity implements OnClickListener {
+
+	private static final String LOGTAG = LogUtil.makeLogTag(UserDetailedInfo.class);
 
 	private User user;
 	private ImageView mIv_userPhoto;
@@ -67,7 +71,7 @@ public class UserDetailedInfo extends BaseActivity implements OnClickListener {
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(true);
 		setOverflowShowingAlways();
-		
+
 		mIv_userPhoto = (ImageView) findViewById(R.id.cgt_iv_userDetailedInfo_userPhoto);
 		mTv_userName = (TextView) findViewById(R.id.cgt_tv_userDetailedInfo_userName);
 		mIv_userSex = (ImageView) findViewById(R.id.cgt_iv_userDetailedInfo_userSex);
@@ -109,7 +113,9 @@ public class UserDetailedInfo extends BaseActivity implements OnClickListener {
 
 			break;
 		case R.id.cgt_btn_userDetailedInfo_sendMsg://发消息
-
+			Intent i = new Intent(this, ChatActivity.class);
+			i.putExtra("user", user);
+			startActivity(i);
 			break;
 		case R.id.cgt_btn_userDetailedInfo_videoChat://视频聊天
 
@@ -126,16 +132,16 @@ public class UserDetailedInfo extends BaseActivity implements OnClickListener {
 		menu.add(Menu.NONE, Menu.FIRST + 1, 100, R.string.text_menu_userDetailedInfo_addTodesktop).setIcon(android.R.drawable.ic_menu_send);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
-	private View getPhote(){
+
+	private View getPhote() {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		//获取这个图片的宽和高
 		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), Integer.parseInt(user.getUserPhote()));
 		options.inJustDecodeBounds = false;
 		//计算缩放比例
-		int be = (int)(options.outHeight/(float)200);
-		if(be<=0){
+		int be = (int) (options.outHeight / (float) 200);
+		if (be <= 0) {
 			be = 1;
 		}
 		options.inSampleSize = be;
@@ -143,7 +149,7 @@ public class UserDetailedInfo extends BaseActivity implements OnClickListener {
 		bitmap = BitmapFactory.decodeResource(getResources(), Integer.parseInt(user.getUserPhote()));
 		int w = bitmap.getWidth();
 		int h = bitmap.getHeight();
-		System.out.println(w + "   " + h);
+		L.i(LOGTAG, "--->w" + w + "---h=" + h);
 		ImageView iv = new ImageView(this);
 		iv.setImageBitmap(bitmap);
 		return iv;

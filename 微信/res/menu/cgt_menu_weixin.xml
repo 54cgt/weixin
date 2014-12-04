@@ -5,7 +5,8 @@
         android:actionViewClass="android.widget.SearchView"
         android:icon="@drawable/cgt_menu_weixin_search"
         android:orderInCategory="100"
-        android:showAsAction="always|collapseActionView"/>
+        android:showAsAction="always|collapseActionView"
+        android:title="@string/text_menu_weixin_search"/>
     <item
         android:id="@+id/menu_weixin_groupChat"
         android:icon="@drawable/cgt_menu_weixin_groupchat"

@@ -38,6 +38,7 @@
     <string name="text_menu_weixin_addFriend">添加朋友</string>
     <string name="text_menu_weixin_sweep">扫一扫</string>
     <string name="text_menu_weixin_feedback">意见反馈</string>
+    <string name="text_menu_weixin_search">搜索</string>
     
     <string name="text_menu_userDetailedInfo_pencil">设置备注及标签</string>
     <string name="text_menu_userDetailedInfo_stars">标为星标朋友</string>

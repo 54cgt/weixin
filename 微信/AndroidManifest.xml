@@ -35,6 +35,7 @@
         <activity android:name="net.cgt.weixin.activity.LoginActivity" >
         </activity>
         <activity
+            android:label=" "
             android:name="net.cgt.weixin.activity.UserDetailedInfo" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
