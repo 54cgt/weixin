@@ -43,6 +43,8 @@
         </activity>
         <activity android:name="net.cgt.weixin.activity.GalleryImageActivity" >
         </activity>
+        <activity android:name="net.cgt.weixin.activity.ChatActivity" >
+        </activity>
     </application>
 
 </manifest>

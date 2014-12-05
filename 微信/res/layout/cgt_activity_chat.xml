@@ -24,7 +24,7 @@
         android:layout_height="wrap_content" >
 
         <EditText
-            android:id="@+id/cgt_et_chat_input"
+            android:id="@+id/cgt_et_chat_msg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.0" />

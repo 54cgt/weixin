@@ -100,9 +100,10 @@ public class UserDetailedInfo extends BaseActivity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
+		Intent intent = new Intent();
 		switch (v.getId()) {
 		case R.id.cgt_iv_userDetailedInfo_userPhoto://用户头像
-			Intent intent = new Intent(this, GalleryImageActivity.class);
+			intent.setClass(this, GalleryImageActivity.class);
 			intent.putExtra("user", user);
 			startActivity(intent);
 			break;
@@ -113,9 +114,9 @@ public class UserDetailedInfo extends BaseActivity implements OnClickListener {
 
 			break;
 		case R.id.cgt_btn_userDetailedInfo_sendMsg://发消息
-			Intent i = new Intent(this, ChatActivity.class);
-			i.putExtra("user", user);
-			startActivity(i);
+			intent.setClass(this, ChatActivity.class);
+			intent.putExtra("user", user);
+			startActivity(intent);
 			break;
 		case R.id.cgt_btn_userDetailedInfo_videoChat://视频聊天
 
