@@ -34,9 +34,7 @@
         </activity>
         <activity android:name="net.cgt.weixin.activity.LoginActivity" >
         </activity>
-        <activity
-            android:label=" "
-            android:name="net.cgt.weixin.activity.UserDetailedInfo" >
+        <activity android:name="net.cgt.weixin.activity.UserDetailedInfoActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.cgt.weixin.activity.MainActivity" />
@@ -44,6 +42,9 @@
         <activity android:name="net.cgt.weixin.activity.GalleryImageActivity" >
         </activity>
         <activity android:name="net.cgt.weixin.activity.ChatActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.cgt.weixin.activity.MainActivity" />
         </activity>
     </application>
 

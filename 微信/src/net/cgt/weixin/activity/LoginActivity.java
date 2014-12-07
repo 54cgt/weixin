@@ -3,13 +3,11 @@ package net.cgt.weixin.activity;
 import net.cgt.weixin.Constants;
 import net.cgt.weixin.GlobalParams;
 import net.cgt.weixin.R;
-import net.cgt.weixin.service.ClientConService;
 import net.cgt.weixin.utils.AppToast;
 import net.cgt.weixin.utils.HandlerTypeUtils;
 import net.cgt.weixin.utils.L;
 import net.cgt.weixin.utils.LogUtil;
 import net.cgt.weixin.utils.SpUtil;
-import net.cgt.weixin.view.listener.TaxiChatManagerListener;
 import net.cgt.weixin.view.manager.XmppManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,7 +51,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				sp.saveString(Constants.XMPP_PASSWORD, userPwd);
 				AppToast.getToast().show("登陆成功");
 				GlobalParams.ISLOGIN = true;
-				addChatListener();// 登陆成功,添加聊天监听器
 				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 				startActivity(intent);
 				finish();
@@ -63,22 +60,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				break;
 			}
 		}
-
-		/**
-		 * 添加聊天监听器
-		 */
-		private void addChatListener() {
-			// 添加监听，最好是放在登录方法中，在关闭连接方法中，移除监听，原因是为了避免重复添加监听，接受重复消息
-			// 退出程序应该关闭连接，移除监听，该监听可以接受所有好友的消息，很方便吧~
-			
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					TaxiChatManagerListener chatManagerListener = new TaxiChatManagerListener();
-					XmppManager.getInstance().getConnection().getChatManager().addChatListener(chatManagerListener);
-				}
-			});
-		};
 	};
 
 	@Override
@@ -165,8 +146,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 			@Override
 			public void run() {
-				ClientConService ccs = new ClientConService(LoginActivity.this);
-				boolean b = ccs.login(userName, userPwd);
+//				ClientConService ccs = new ClientConService(LoginActivity.this);
+//				boolean b = ccs.login(userName, userPwd);
+				
+				boolean b = XmppManager.getInstance().login(userName, userPwd);
+				
 				if (b) {
 					handler.sendEmptyMessage(HandlerTypeUtils.WX_HANDLER_TYPE_LOAD_DATA_SUCCESS);
 				} else {

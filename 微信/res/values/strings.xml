@@ -40,6 +40,7 @@
     <string name="text_menu_weixin_feedback">意见反馈</string>
     <string name="text_menu_weixin_search">搜索</string>
     
+    <string name="text_menu_userDetailedInfo_title">详细资料</string>
     <string name="text_menu_userDetailedInfo_pencil">设置备注及标签</string>
     <string name="text_menu_userDetailedInfo_stars">标为星标朋友</string>
     <string name="text_menu_userDetailedInfo_jurisdiction">设置朋友圈权限</string>
@@ -65,5 +66,11 @@
     <string name="text_addressbook_groupChat">群聊</string>
     <string name="text_addressbook_mark">标签</string>
     <string name="text_addressbook_publicNumber">公众号</string>
+    
+    <string name="text_menu_chatInfo">聊天信息</string>
+    <string name="text_chat_pressToTalk">按住\u0020\u0020\u0020\u0020说话</string>
+    <string name="text_chat_loosenTheEnd">松开\u0020\u0020\u0020\u0020结束</string>
+    <string name="text_chat_releaseFinger_cancelingSend">松开手指，取消发送</string>
+    <string name="text_chat_fingerSliding_cancelingSend">手指上滑，取消发送</string>
     
 </resources>

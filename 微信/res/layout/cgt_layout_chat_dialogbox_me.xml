@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="right"
+    android:orientation="horizontal"
+    android:paddingBottom="5dip"
+    android:paddingTop="5dip" >
+
+    <TextView
+        android:id="@+id/cgt_tv_chat_dialogBox_me"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dip"
+        android:background="@drawable/cgt_selector_chat_dialogbox_me_bg"
+        android:lineSpacingExtra="3dip"
+        android:maxWidth="232dip"
+        android:paddingBottom="5dip"
+        android:paddingLeft="8dip"
+        android:paddingRight="15dip"
+        android:paddingTop="8dip"
+        android:text="你好啊!人潮人海,有你有我!"
+        android:textColor="@color/color_353535"
+        android:textSize="16dip" />
+
+    <ImageView
+        android:id="@+id/cgt_iv_chat_userImg_me"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:src="@drawable/user_picture" />
+
+</LinearLayout>

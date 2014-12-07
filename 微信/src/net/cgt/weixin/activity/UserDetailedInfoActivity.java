@@ -32,9 +32,9 @@ import android.widget.TextView;
  * @author lijian
  * @date 2014-11-30
  */
-public class UserDetailedInfo extends BaseActivity implements OnClickListener {
+public class UserDetailedInfoActivity extends BaseActivity implements OnClickListener {
 
-	private static final String LOGTAG = LogUtil.makeLogTag(UserDetailedInfo.class);
+	private static final String LOGTAG = LogUtil.makeLogTag(UserDetailedInfoActivity.class);
 
 	private User user;
 	private ImageView mIv_userPhoto;
@@ -70,6 +70,7 @@ public class UserDetailedInfo extends BaseActivity implements OnClickListener {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle(R.string.text_menu_userDetailedInfo_title);
 		setOverflowShowingAlways();
 
 		mIv_userPhoto = (ImageView) findViewById(R.id.cgt_iv_userDetailedInfo_userPhoto);

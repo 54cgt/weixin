@@ -5,35 +5,133 @@
     android:orientation="vertical" >
 
     <ScrollView
+        android:id="@+id/cgt_sv_chat_showBoxScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1.0" >
+        android:layout_weight="1.0"
+        android:background="@color/color_ebebeb" >
 
         <LinearLayout
             android:id="@+id/cgt_ll_chat_showBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/color_ebebeb"
             android:orientation="vertical"
             android:paddingLeft="10dip"
             android:paddingRight="5dip" >
         </LinearLayout>
     </ScrollView>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dip"
+        android:background="@color/color_bfbfbf" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@color/color_fefefe"
+        android:orientation="horizontal" >
 
-        <EditText
-            android:id="@+id/cgt_et_chat_msg"
-            android:layout_width="0dp"
+        <Button
+            android:id="@+id/cgt_btn_chat_speech"
+            android:layout_width="35dip"
+            android:layout_height="35dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="8dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="8dip"
+            android:background="@drawable/cgt_selector_chat_input_speech_bg" />
+
+        <Button
+            android:id="@+id/cgt_btn_chat_keyboard"
+            android:layout_width="35dip"
+            android:layout_height="35dip"
+            android:layout_marginBottom="8dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="8dip"
+            android:background="@drawable/cgt_selector_chat_input_keyboard_bg"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/cgt_ll_chat_input_box"
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="1.0" />
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="8dip"
+            android:layout_marginLeft="8dip"
+            android:layout_marginRight="8dip"
+            android:layout_marginTop="8dip"
+            android:layout_weight="1.0"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/cgt_et_chat_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginRight="15dip"
+                android:layout_weight="1.0"
+                android:background="@drawable/cgt_selector_chat_input_inputbox_bg"
+                android:lineSpacingExtra="3dip"
+                android:maxHeight="80dip"
+                android:paddingBottom="3dip"
+                android:paddingRight="40dip"
+                android:textColor="@color/black"
+                android:textCursorDrawable="@null"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/cgt_btn_chat_smilingface"
+                android:layout_width="25dip"
+                android:layout_height="25dip"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="5dip"
+                android:layout_marginLeft="-50dip"
+                android:layout_marginRight="10dip"
+                android:layout_marginTop="5dip"
+                android:background="@drawable/cgt_selector_chat_input_smilingface_bg" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/cgt_btn_chat_pressToTalk"
+            android:layout_width="0dip"
+            android:layout_height="35dip"
+            android:layout_marginBottom="8dip"
+            android:layout_marginLeft="8dip"
+            android:layout_marginRight="8dip"
+            android:layout_marginTop="8dip"
+            android:layout_weight="1.0"
+            android:background="@drawable/cgt_selector_chat_input_presstotalk_bg"
+            android:gravity="center"
+            android:text="@string/text_chat_pressToTalk"
+            android:textColor="@color/color_727272"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/cgt_btn_chat_plus"
+            android:layout_width="35dip"
+            android:layout_height="35dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="8dip"
+            android:layout_marginRight="10dip"
+            android:layout_marginTop="8dip"
+            android:background="@drawable/cgt_selector_chat_input_plus_bg" />
 
         <Button
             android:id="@+id/cgt_btn_chat_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="发送" />
+            android:layout_width="45dip"
+            android:layout_height="35dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="8dip"
+            android:layout_marginRight="10dip"
+            android:layout_marginTop="8dip"
+            android:background="@drawable/cgt_selector_chat_input_send_bg"
+            android:text="发送"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>

@@ -1,17 +1,23 @@
 package net.cgt.weixin.fragment;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.jivesoftware.smack.Roster;
+import org.jivesoftware.smack.RosterEntry;
+import org.jivesoftware.smack.packet.Presence;
+
 import net.cgt.weixin.GlobalParams;
 import net.cgt.weixin.R;
-import net.cgt.weixin.activity.UserDetailedInfo;
+import net.cgt.weixin.activity.UserDetailedInfoActivity;
 import net.cgt.weixin.domain.User;
 import net.cgt.weixin.utils.AppToast;
 import net.cgt.weixin.utils.DensityUtil;
 import net.cgt.weixin.utils.LogUtil;
 import net.cgt.weixin.view.adapter.PinyinAdapter;
+import net.cgt.weixin.view.manager.XmppManager;
 import net.cgt.weixin.view.pinyin.AssortView;
 import net.cgt.weixin.view.pinyin.AssortView.OnTouchAssortListener;
 import android.app.Dialog;
@@ -70,9 +76,53 @@ public class AddressBookFragment extends BaseFragment implements OnItemLongClick
 		mElv_addressbook.setOnItemLongClickListener(this);
 		mElv_addressbook.setOnChildClickListener(this);
 	}
-
+//	public void updateRoster() {
+//		Collection<RosterEntry> entries = roster.getEntries();
+//		for (RosterEntry entry : entries) {
+//			System.out.print(entry.getName() + " - " + entry.getUser() + " - " + entry.getType() + " - " + entry.getGroups().size());
+//			Presence presence = roster.getPresence(entry.getUser());
+//			System.out.println(" - " + presence.getStatus() + " - " + presence.getFrom());
+//			User user = new User();
+//			user.setName(entry.getName());
+//			user.setUser(entry.getUser());
+//			user.setType(entry.getType());
+//			user.setSize(entry.getGroups().size());
+//			user.setStatus(presence.getStatus());
+//			user.setFrom(presence.getFrom());
+//
+//			userinfos.add(user);
+//		}
+//		rosterAdapter.notifyDataSetChanged();
+//	}
 	private void initData() {
+		
+//		new Thread(new Runnable() {
+//			
+//			@Override
+//			public void run() {
+//				System.out.println("------获取好友-----------------------");
+//				Roster roster = XmppManager.getInstance().getConnection().getRoster();
+//				System.out.println("roster.toString()--->"+roster.toString());
+//				
+//				List<RosterEntry> allEntries = XmppManager.getInstance().getAllEntries(roster);
+//				
+//				for (RosterEntry rosterEntry : allEntries) {
+//					rosterEntry.getName();
+//					System.out.println("---------------------------------------------------");
+//					System.out.println("getName--->" + rosterEntry.getName());
+//					System.out.println("getUser--->" + rosterEntry.getUser());
+//					System.out.println("getGroups--->" + rosterEntry.getGroups().toString());
+//					System.out.println("getStatus--->" + rosterEntry.getStatus().toString());
+//					System.out.println("getType--->" + rosterEntry.getType().toString());
+//					
+//				}
+//			}
+//		}).start();
+		
+		
+		
 		ArrayList<String> mItems = new ArrayList<String>();
+		mItems.add("admin");
 		mItems.add("Diary of a Wimpy Kid 6: Cabin Fever");
 		mItems.add("Steve Jobs");
 		mItems.add("Inheritance (The Inheritance Cycle)");
@@ -266,7 +316,7 @@ public class AddressBookFragment extends BaseFragment implements OnItemLongClick
 			}
 		} else {
 			Intent intent = new Intent();
-			intent.setClass(getActivity(), UserDetailedInfo.class);
+			intent.setClass(getActivity(), UserDetailedInfoActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putParcelable("user", (User) adapter.getChild(groupPosition, childPosition));
 			intent.putExtras(bundle);

@@ -12,11 +12,6 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="@string/text_menu_userDetailedInfo_pencil"/>
-    
-    <item android:title="详细资料"
-        
-        />
-
     <item
         android:id="@+id/menu_userDetailedInfo_pencil"
         android:icon="@drawable/cgt_menu_pencil"

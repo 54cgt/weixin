@@ -113,6 +113,9 @@ public class XmppManager {
 	private XMPPConnection connection;
 
 	private static XmppManager xmppManager;
+	
+	/** 聊天监听器 **/
+	private TaxiChatManagerListener chatManagerListener;
 
 	public static XmppManager getInstance() {
 		if (xmppManager == null) {
@@ -272,6 +275,14 @@ public class XmppManager {
 			}
 		}
 	}
+	
+	/**
+	 * 获取一个聊天监听器
+	 * @return
+	 */
+	public TaxiChatManagerListener getChatManagerListener(){
+		return this.chatManagerListener;
+	}
 
 	/**
 	 * 登陆
@@ -290,9 +301,33 @@ public class XmppManager {
 			//cst.start();
 			//ManageClientThread.addClientSendThread(account,cst);
 
+			// 添加监听，最好是放在登录方法中，在关闭连接方法中，移除监听，原因是为了避免重复添加监听，接受重复消息
+			// 退出程序应该关闭连接，移除监听，该监听可以接受所有好友的消息，很方便吧~
+			chatManagerListener = new TaxiChatManagerListener();
+			getConnection().getChatManager().addChatListener(chatManagerListener);
+
 			return true;
 		} catch (XMPPException e) {
 			L.e(LOGTAG, "XMPP connection failed", e);
+		}
+		return false;
+	}
+	
+	/**
+	 * 登出
+	 * 
+	 * @return
+	 */
+	public boolean logout(){
+		// 添加监听，最好是放在登录方法中，在关闭连接方法中，移除监听，原因是为了避免重复添加监听，接受重复消息
+		// 退出程序应该关闭连接，移除监听，该监听可以接受所有好友的消息，很方便吧~
+		getConnection().getChatManager().removeChatListener(chatManagerListener);
+		
+		//退出登录
+		getConnection().disconnect();
+		
+		if (isConnected()) {
+			return true;
 		}
 		return false;
 	}
@@ -916,6 +951,7 @@ public class XmppManager {
 	//	首先要获取一个聊天窗口，getConnection()为获取连接connection的方法，调用getFriendChat()获取
 
 	private Map<String, Chat> chatManage = new HashMap<String, Chat>();// 聊天窗口管理map集合
+
 
 	/**
 	 * 获取或创建聊天窗口
