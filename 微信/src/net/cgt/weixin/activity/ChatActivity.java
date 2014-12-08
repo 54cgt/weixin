@@ -1,7 +1,6 @@
 package net.cgt.weixin.activity;
 
 import java.lang.reflect.Field;
-import java.util.Date;
 
 import net.cgt.weixin.R;
 import net.cgt.weixin.domain.User;
@@ -25,14 +24,19 @@ import android.os.Message;
 import android.os.Vibrator;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewConfiguration;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -52,18 +56,62 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
 	protected static final int FLAG_RECEIVER = 100;
 
+	/**
+	 * 聊天用户
+	 */
 	private User user;
+	/**
+	 * 内容显示容器的外置滚动
+	 */
 	private ScrollView mSv_chat_showBoxScrollView;
+	/**
+	 * 内容显示容器
+	 */
 	private LinearLayout mLl_chat_showBox;
+	/**
+	 * 语音按钮
+	 */
 	private Button mBtn_chat_speech;
+	/**
+	 * 键盘按钮
+	 */
 	private Button mBtn_chat_keyboard;
+	/**
+	 * 输入框外置容器
+	 */
 	private LinearLayout mLl_chat_inputBox;
+	/**
+	 * 笑脸按钮
+	 */
 	private Button mBtn_chat_smilingface;
+	/**
+	 * 按住说话按钮
+	 */
 	private Button mBtn_chat_pressToTalk;
+	/**
+	 * 加号
+	 */
 	private Button mBtn_chat_plus;
+	/**
+	 * 文本输入框
+	 */
 	private EditText mEt_chat_input;
+	/**
+	 * 发送按钮
+	 */
 	private Button mBtn_chat_send;
+	/**
+	 * 震动传感器
+	 */
 	private Vibrator vibrator;
+	/**
+	 * 输入框中的文本
+	 */
+	private String msg = "";
+	/**
+	 * 发送按钮show动画集
+	 */
+	private AnimationSet animationSet;
 
 	/** 代码注册一个广播接收者(临时的) **/
 	private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -158,7 +206,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		user = intent.getParcelableExtra("user");
 		init();
 	}
-	
+
 	private void init() {
 		initView();
 		initData();
@@ -188,12 +236,77 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 	private void initData() {
 		vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 		IntentFilter filter = new IntentFilter("net.cgt.weixin.chat");
-		registerReceiver(receiver, filter);
+		registerReceiver(receiver, filter);// 注册一个广播接收者
+
+		Animation sa = new ScaleAnimation(0.8f, 1.0f, 0.8f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+		Animation aa = new AlphaAnimation(0.1f, 1.0f);
+		animationSet = new AnimationSet(true);
+		animationSet.addAnimation(aa);
+		animationSet.addAnimation(sa);
+		animationSet.setDuration(100);
+		mEt_chat_input.addTextChangedListener(watcher);
 	}
+
+	/**
+	 * 输入框文本改变监听器
+	 */
+	TextWatcher watcher = new TextWatcher() {
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			L.d(LOGTAG, "onTextChanged--->s=" + s + "---start=" + start + "---before=" + before + "---count=" + count);
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			// TODO s-->在输入文本前,文本框中已有的文本内容
+			// start-->当前输入的文本的角标
+			// count-->
+			// after-->输入的文本长度
+			L.d(LOGTAG, "beforeTextChanged--->s=" + s + "---start=" + start + "---count=" + count + "---after=" + after);
+			if (s.toString().isEmpty()) {
+				mBtn_chat_plus.setVisibility(View.GONE);
+				mBtn_chat_send.setVisibility(View.VISIBLE);
+				mBtn_chat_send.startAnimation(animationSet);
+			}
+		}
+
+		@Override
+		public void afterTextChanged(Editable s) {
+			// TODO s-->刚刚输入的文本
+			L.d(LOGTAG, "afterTextChanged--->s.toString()=" + s.toString());
+			if (s.toString().isEmpty()) {
+				mBtn_chat_plus.setVisibility(View.VISIBLE);
+				mBtn_chat_send.setVisibility(View.GONE);
+				mBtn_chat_plus.startAnimation(animationSet);
+			}
+		}
+	};
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.cgt_btn_chat_speech:// 语音按钮
+			mBtn_chat_speech.setVisibility(View.GONE);
+			mBtn_chat_keyboard.setVisibility(View.VISIBLE);
+			mBtn_chat_pressToTalk.setVisibility(View.VISIBLE);
+			mLl_chat_inputBox.setVisibility(View.GONE);
+			break;
+		case R.id.cgt_btn_chat_keyboard:// 键盘按钮
+			mBtn_chat_speech.setVisibility(View.VISIBLE);
+			mBtn_chat_keyboard.setVisibility(View.GONE);
+			mBtn_chat_pressToTalk.setVisibility(View.GONE);
+			mLl_chat_inputBox.setVisibility(View.VISIBLE);
+			break;
+		case R.id.cgt_btn_chat_smilingface:// 笑脸按钮
+
+			break;
+		case R.id.cgt_btn_chat_pressToTalk:// 按住说话
+
+			break;
+		case R.id.cgt_btn_chat_plus:// 加号
+
+			break;
 		case R.id.cgt_btn_chat_send://发送按钮
 			if (checkValidity()) {
 				sendMsg();
@@ -204,8 +317,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 			break;
 		}
 	}
-
-	private String msg = "";
 
 	/**
 	 * 检查合法性

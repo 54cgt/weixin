@@ -115,7 +115,8 @@
             android:layout_height="35dip"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="8dip"
-            android:layout_marginRight="10dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginLeft="5dip"
             android:layout_marginTop="8dip"
             android:background="@drawable/cgt_selector_chat_input_plus_bg" />
 
