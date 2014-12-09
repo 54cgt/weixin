@@ -123,6 +123,18 @@ public class AddressBookFragment extends BaseFragment implements OnItemLongClick
 		
 		ArrayList<String> mItems = new ArrayList<String>();
 		mItems.add("admin");
+		mItems.add("lijian");
+		mItems.add("lijian1");
+		mItems.add("lijian2");
+		mItems.add("lijian3");
+		mItems.add("lijian4");
+		mItems.add("lijian5");
+		mItems.add("李建");
+		mItems.add("李建1");
+		mItems.add("李建2");
+		mItems.add("李建3");
+		mItems.add("李建4");
+		mItems.add("李建5");
 		mItems.add("Diary of a Wimpy Kid 6: Cabin Fever");
 		mItems.add("Steve Jobs");
 		mItems.add("Inheritance (The Inheritance Cycle)");
