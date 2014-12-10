@@ -115,8 +115,8 @@
             android:layout_height="35dip"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="8dip"
-            android:layout_marginRight="15dip"
             android:layout_marginLeft="5dip"
+            android:layout_marginRight="15dip"
             android:layout_marginTop="8dip"
             android:background="@drawable/cgt_selector_chat_input_plus_bg" />
 
@@ -133,6 +133,29 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cgt_ll_chat_smilingface_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/cgt_ll_chat_smilingface_body"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/cgt_rg_chat_smilingface_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal" >
+        </RadioGroup>
     </LinearLayout>
 
 </LinearLayout>

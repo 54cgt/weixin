@@ -9,6 +9,8 @@ import net.cgt.weixin.utils.HandlerTypeUtils;
 import net.cgt.weixin.utils.L;
 import net.cgt.weixin.utils.LogUtil;
 import net.cgt.weixin.view.manager.XmppManager;
+import net.cgt.weixin.view.scrollView.MyScrollView;
+import net.cgt.weixin.view.scrollView.MyScrollView.IPageChangedListener;
 
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPException;
@@ -41,6 +43,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -97,9 +102,25 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 	 */
 	private EditText mEt_chat_input;
 	/**
+	 * 表情外边框
+	 */
+	private LinearLayout mLl_chat_smilingface_box;
+	/**
+	 * 表情内容体
+	 */
+	private LinearLayout mLl_chat_smilingface_body;
+	/**
+	 * 表情导航tab
+	 */
+	private RadioGroup mRg_chat_smilingface_tab;
+	/**
 	 * 发送按钮
 	 */
 	private Button mBtn_chat_send;
+	/**
+	 * 自定义ScrollView
+	 */
+	private MyScrollView mV_myScrollView;
 	/**
 	 * 震动传感器
 	 */
@@ -230,8 +251,20 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		mBtn_chat_pressToTalk = (Button) findViewById(R.id.cgt_btn_chat_pressToTalk);
 		mBtn_chat_plus = (Button) findViewById(R.id.cgt_btn_chat_plus);
 		mBtn_chat_send = (Button) findViewById(R.id.cgt_btn_chat_send);
+
+		mLl_chat_smilingface_box = (LinearLayout) findViewById(R.id.cgt_ll_chat_smilingface_box);
+		mLl_chat_smilingface_body = (LinearLayout) findViewById(R.id.cgt_ll_chat_smilingface_body);
+		mRg_chat_smilingface_tab = (RadioGroup) findViewById(R.id.cgt_rg_chat_smilingface_tab);
+
+		mBtn_chat_speech.setOnClickListener(this);
+		mBtn_chat_keyboard.setOnClickListener(this);
+		mBtn_chat_smilingface.setOnClickListener(this);
+		mBtn_chat_pressToTalk.setOnClickListener(this);
+		mBtn_chat_plus.setOnClickListener(this);
 		mBtn_chat_send.setOnClickListener(this);
 	}
+
+	private int[] imgID = { R.drawable.cgt_logo, R.drawable.user_picture, R.drawable.icon };
 
 	private void initData() {
 		vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
@@ -245,6 +278,55 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		animationSet.addAnimation(sa);
 		animationSet.setDuration(100);
 		mEt_chat_input.addTextChangedListener(watcher);
+
+		setSmilingfaceData();
+	}
+
+	/**
+	 * 设置笑脸被点击后的表情数据
+	 */
+	private void setSmilingfaceData() {
+		mV_myScrollView = new MyScrollView(this);
+		for (int i = 0; i < imgID.length; i++) {
+			ImageView iv = new ImageView(this);
+			iv.setBackgroundResource(imgID[i]);//注意这里要设置背景图才能填充满屏幕(请注意这个细节点)
+			mV_myScrollView.addView(iv);
+		}
+
+		//		View view = getLayoutInflater().inflate(R.layout.test, null);
+		//		mV_myScrollView.addView(view, 3);
+
+		mLl_chat_smilingface_body.addView(mV_myScrollView);//将MyScrollView添加到内容显示区
+
+		for (int i = 0; i < mV_myScrollView.getChildCount(); i++) {
+			RadioButton rbtn = new RadioButton(this);
+			rbtn.setId(i);
+			mRg_chat_smilingface_tab.addView(rbtn);
+			if (i == 0) {
+				rbtn.setChecked(true);
+			}
+		}
+		/**
+		 * 监听单选按钮是否被选中,
+		 */
+		mRg_chat_smilingface_tab.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				mV_myScrollView.moveToDest(checkedId);
+			}
+		});
+
+		/**
+		 * 
+		 */
+		mV_myScrollView.setChangedListener(new IPageChangedListener() {
+
+			@Override
+			public void changedTo(int pageId) {
+				((RadioButton) mRg_chat_smilingface_tab.getChildAt(pageId)).setChecked(true);
+			}
+		});
 	}
 
 	/**
@@ -299,7 +381,11 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 			mLl_chat_inputBox.setVisibility(View.VISIBLE);
 			break;
 		case R.id.cgt_btn_chat_smilingface:// 笑脸按钮
-
+			if (mLl_chat_smilingface_box.getVisibility() == View.VISIBLE) {
+				mLl_chat_smilingface_box.setVisibility(View.GONE);
+			} else {
+				mLl_chat_smilingface_box.setVisibility(View.VISIBLE);
+			}
 			break;
 		case R.id.cgt_btn_chat_pressToTalk:// 按住说话
 
