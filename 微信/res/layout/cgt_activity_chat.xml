@@ -139,21 +139,30 @@
         android:id="@+id/cgt_ll_chat_smilingface_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_fefefe"
         android:orientation="vertical"
         android:visibility="gone" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:background="@color/color_bfbfbf" />
 
         <LinearLayout
             android:id="@+id/cgt_ll_chat_smilingface_body"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="130dip"
+            android:layout_marginBottom="5dip"
+            android:layout_marginTop="5dip"
             android:orientation="vertical" >
         </LinearLayout>
 
         <RadioGroup
             android:id="@+id/cgt_rg_chat_smilingface_tab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="20dip"
             android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="horizontal" >
         </RadioGroup>
     </LinearLayout>

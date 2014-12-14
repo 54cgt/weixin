@@ -5,6 +5,9 @@ import java.util.TimerTask;
 
 import net.cgt.weixin.GlobalParams;
 import net.cgt.weixin.R;
+import net.cgt.weixin.utils.FaceConversionUtil;
+import net.cgt.weixin.utils.L;
+import net.cgt.weixin.utils.LogUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +21,8 @@ import android.view.WindowManager;
  * 
  */
 public class SplashActivity extends Activity {
+
+	protected static final String LOGTAG = LogUtil.makeLogTag(SplashActivity.class);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,15 @@ public class SplashActivity extends Activity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);//无标题
 		setContentView(R.layout.cgt_activity_splash);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//全屏
+
+		//加载表情数据
+		new Thread(new Runnable() {
+            @Override
+            public void run() {
+            	L.i(LOGTAG, "加载表情数据");
+                FaceConversionUtil.getInstace().getFileText(SplashActivity.this);
+            }
+        }).start();
 		
 		TimerTask timerTask = new TimerTask() {
 
@@ -50,6 +64,6 @@ public class SplashActivity extends Activity {
 				finish();
 			}
 		};
-		new Timer().schedule(timerTask, 3000);
+		new Timer().schedule(timerTask, 1000);
 	}
 }

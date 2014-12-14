@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+<!--     <item android:state_enabled="true" android:state_checked="true" android:drawable="@drawable/cgt_radiobtn_chat_sel"> -->
+<!--     </item> -->
+<!--     <item android:state_enabled="true" android:state_checked="false" android:drawable="@drawable/cgt_radiobtn_chat_nor"> -->
+<!--     </item> -->
+    <item android:state_enabled="true" android:state_checked="true">
+        <shape android:shape="oval" android:useLevel="false">
+            <solid android:color="@color/color_999999"/>
+            <size android:width="5dip" android:height="5dip"/>
+        </shape>
+    </item>
+    <item android:state_enabled="true" android:state_checked="false">
+        <shape android:shape="oval" android:useLevel="false">
+            <solid android:color="@color/color_ebebeb"/>
+            <size android:width="5dip" android:height="5dip"/>
+        </shape>
+    </item>
+
+</selector>

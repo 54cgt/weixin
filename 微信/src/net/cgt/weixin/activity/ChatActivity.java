@@ -1,13 +1,19 @@
 package net.cgt.weixin.activity;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.cgt.weixin.R;
+import net.cgt.weixin.domain.ChatEmoji;
 import net.cgt.weixin.domain.User;
 import net.cgt.weixin.utils.AppToast;
+import net.cgt.weixin.utils.DensityUtil;
+import net.cgt.weixin.utils.FaceConversionUtil;
 import net.cgt.weixin.utils.HandlerTypeUtils;
 import net.cgt.weixin.utils.L;
 import net.cgt.weixin.utils.LogUtil;
+import net.cgt.weixin.view.adapter.EmojiAdapter;
 import net.cgt.weixin.view.manager.XmppManager;
 import net.cgt.weixin.view.scrollView.MyScrollView;
 import net.cgt.weixin.view.scrollView.MyScrollView.IPageChangedListener;
@@ -20,6 +26,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,20 +35,26 @@ import android.os.Vibrator;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -55,7 +69,7 @@ import android.widget.TextView;
  * @author lijian
  * @date 2014-12-04
  */
-public class ChatActivity extends BaseActivity implements OnClickListener {
+public class ChatActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
 
 	private static final String LOGTAG = LogUtil.makeLogTag(ChatActivity.class);
 
@@ -122,6 +136,26 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 	 */
 	private MyScrollView mV_myScrollView;
 	/**
+	 * 表情集合
+	 */
+	private List<List<ChatEmoji>> mList_emoji;
+	/**
+	 * 表情页界面集合
+	 */
+	//	private ArrayList<View> pageViews;
+	/**
+	 * 表情数据填充器
+	 */
+	private List<EmojiAdapter> mList_emojiAdapter;
+	/**
+	 * 当前表情页
+	 */
+	private int current = 0;
+	/**
+	 * 表情页的监听事件
+	 */
+	private OnCorpusSelectedListener mListener;
+	/**
 	 * 震动传感器
 	 */
 	private Vibrator vibrator;
@@ -133,6 +167,19 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 	 * 发送按钮show动画集
 	 */
 	private AnimationSet animationSet;
+
+	/**
+	 * 表情选择监听
+	 * 
+	 * @author naibo-liao
+	 * @时间： 2013-1-15下午04:32:54
+	 */
+	public interface OnCorpusSelectedListener {
+
+		void onCorpusSelected(ChatEmoji emoji);
+
+		void onCorpusDeleted();
+	}
 
 	/** 代码注册一个广播接收者(临时的) **/
 	private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -264,8 +311,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		mBtn_chat_send.setOnClickListener(this);
 	}
 
-	private int[] imgID = { R.drawable.cgt_logo, R.drawable.user_picture, R.drawable.icon };
-
 	private void initData() {
 		vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 		IntentFilter filter = new IntentFilter("net.cgt.weixin.chat");
@@ -287,21 +332,60 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 	 */
 	private void setSmilingfaceData() {
 		mV_myScrollView = new MyScrollView(this);
-		for (int i = 0; i < imgID.length; i++) {
-			ImageView iv = new ImageView(this);
-			iv.setBackgroundResource(imgID[i]);//注意这里要设置背景图才能填充满屏幕(请注意这个细节点)
-			mV_myScrollView.addView(iv);
+		mList_emoji = FaceConversionUtil.getInstace().emojiLists;
+
+		// 添加表情页
+		mList_emojiAdapter = new ArrayList<EmojiAdapter>();
+		mV_myScrollView.removeAllViews();
+		for (int i = 0; i < mList_emoji.size(); i++) {
+			//			GridView的一些特殊属性：
+			//
+			//			1.android:numColumns=”auto_fit”   //GridView的列数设置为自动
+			//			2.android:columnWidth=”90dp "       //每列的宽度，也就是Item的宽度
+			//			3.android:stretchMode=”columnWidth"//缩放与列宽大小同步
+			//			4.android:verticalSpacing=”10dp”          //两行之间的边距
+			//			5.android:horizontalSpacing=”10dp”      //两列之间的边距 
+			//			6.android:cacheColorHint="#00000000" //去除拖动时默认的黑色背景
+			//			7.android:listSelector="#00000000"        //去除选中时的黄色底色
+			//			8.android:scrollbars="none"                   //隐藏GridView的滚动条
+			//			9.android:fadeScrollbars="true"             //设置为true就可以实现滚动条的自动隐藏和显示
+			//			10.android:fastScrollEnabled="true"      //GridView出现快速滚动的按钮(至少滚动4页才会显示)
+			//			11.android:fadingEdge="none"                //GridView衰落(褪去)边缘颜色为空，缺省值是vertical。(可以理解为上下边缘的提示色)
+			//			12.android:fadingEdgeLength="10dip"   //定义的衰落(褪去)边缘的长度
+			//			13.android:stackFromBottom="true"       //设置为true时，你做好的列表就会显示你列表的最下面
+			//			14.android:transcriptMode="alwaysScroll" //当你动态添加数据时，列表将自动往下滚动最新的条目可以自动滚动到可视范围内
+			//			15.android:drawSelectorOnTop="false"  //点击某条记录不放，颜色会在记录的后面成为背景色,内容的文字可见(缺省为false)
+			//			
+			GridView view = new GridView(this);
+			EmojiAdapter adapter = new EmojiAdapter(this, mList_emoji.get(i));
+			view.setAdapter(adapter);
+			mList_emojiAdapter.add(adapter);
+			view.setOnItemClickListener(this);
+			view.setNumColumns(7);
+			view.setBackgroundColor(Color.TRANSPARENT);
+			//			view.setHorizontalSpacing(1); //两列之间的边距
+			//			view.setVerticalSpacing(10);//两行之间的边距
+			view.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);//缩放与列宽大小同步
+			view.setCacheColorHint(0);//去除拖动时默认的黑色背景
+			//						view.setPadding(5, 5, 5, 5);
+			view.setSelector(new ColorDrawable(Color.TRANSPARENT));
+			LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			view.setLayoutParams(params);
+			view.setGravity(Gravity.CENTER);
+			mV_myScrollView.addView(view);
 		}
 
-		//		View view = getLayoutInflater().inflate(R.layout.test, null);
-		//		mV_myScrollView.addView(view, 3);
-
+		mLl_chat_smilingface_body.removeAllViews();
 		mLl_chat_smilingface_body.addView(mV_myScrollView);//将MyScrollView添加到内容显示区
 
+		RadioGroup.LayoutParams params_rb = new RadioGroup.LayoutParams(DensityUtil.dip2px(this, 8), DensityUtil.dip2px(this, 8));
+		int marginValue = DensityUtil.dip2px(this, 3);
+		params_rb.setMargins(marginValue, 0, marginValue, 0);
 		for (int i = 0; i < mV_myScrollView.getChildCount(); i++) {
 			RadioButton rbtn = new RadioButton(this);
+			rbtn.setButtonDrawable(R.drawable.cgt_selector_chat_radiobtn_bg);
 			rbtn.setId(i);
-			mRg_chat_smilingface_tab.addView(rbtn);
+			mRg_chat_smilingface_tab.addView(rbtn, params_rb);
 			if (i == 0) {
 				rbtn.setChecked(true);
 			}
@@ -313,6 +397,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				current = checkedId;
 				mV_myScrollView.moveToDest(checkedId);
 			}
 		});
@@ -324,6 +409,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
 			@Override
 			public void changedTo(int pageId) {
+				current = pageId;
 				((RadioButton) mRg_chat_smilingface_tab.getChildAt(pageId)).setChecked(true);
 			}
 		});
@@ -489,5 +575,35 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		ChatEmoji emoji = (ChatEmoji) mList_emojiAdapter.get(current).getItem(position);
+		if (emoji.getId() == R.drawable.cgt_selector_chat_emoji_del_bg) {//如果是删除按钮
+			int selection = mEt_chat_input.getSelectionStart();//获取光标所在位置
+//			String text = mEt_chat_input.getText().toString();//获取输入框中的文本
+			String text = mEt_chat_input.getText().toString().substring(0, selection);//获取光标之前的所有文本
+			if (selection > 0) {//如果光标位置大于零,表示有输入文字
+				String text2 = text.substring(selection - 1);//获取光标位置的最后一个字符
+				if ("]".equals(text2)) {//判断该字符是否为"]"
+					int start = text.lastIndexOf("[");//获取最后
+					int end = selection;
+					mEt_chat_input.getText().delete(start, end);
+					return;
+				}
+				mEt_chat_input.getText().delete(selection - 1, selection);
+			}
+		}
+		if (!TextUtils.isEmpty(emoji.getDescription())) {
+			if (mListener != null)
+				mListener.onCorpusSelected(emoji);
+			SpannableString spannableString = FaceConversionUtil.getInstace().addFace(this, emoji.getId(), emoji.getDescription());
+			mEt_chat_input.append(spannableString);
+		}
+	}
+
+	public void setOnCorpusSelectedListener(OnCorpusSelectedListener listener) {
+		mListener = listener;
 	}
 }
