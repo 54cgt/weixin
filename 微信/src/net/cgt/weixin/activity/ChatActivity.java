@@ -45,6 +45,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -232,7 +233,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 		ImageView mIv_chat_userImg = (ImageView) v.findViewById(R.id.cgt_iv_chat_userImg_otherparty);
 
 		mIv_chat_userImg.setImageResource(Integer.parseInt(user.getUserPhote()));
-		mTv_chat_dialogBox.setText(body);
+		SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(this, body);
+		mTv_chat_dialogBox.setText(spannableString);
 		mLl_chat_showBox.addView(v);
 
 		setChatWindowToDown();
@@ -261,7 +263,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 		ImageView mIv_chat_userImg = (ImageView) v.findViewById(R.id.cgt_iv_chat_userImg_me);
 
 		mIv_chat_userImg.setImageResource(R.drawable.user_picture);
-		mTv_chat_dialogBox.setText(msg);
+		SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(this, msg);
+		mTv_chat_dialogBox.setText(spannableString);
 		mLl_chat_showBox.addView(v);
 		setChatWindowToDown();
 	}
@@ -270,6 +273,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.cgt_activity_chat);
+		//隐藏软体键盘
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		Intent intent = this.getIntent();
 		user = intent.getParcelableExtra("user");
 		init();
@@ -582,7 +587,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 		ChatEmoji emoji = (ChatEmoji) mList_emojiAdapter.get(current).getItem(position);
 		if (emoji.getId() == R.drawable.cgt_selector_chat_emoji_del_bg) {//如果是删除按钮
 			int selection = mEt_chat_input.getSelectionStart();//获取光标所在位置
-//			String text = mEt_chat_input.getText().toString();//获取输入框中的文本
+			//			String text = mEt_chat_input.getText().toString();//获取输入框中的文本
 			String text = mEt_chat_input.getText().toString().substring(0, selection);//获取光标之前的所有文本
 			if (selection > 0) {//如果光标位置大于零,表示有输入文字
 				String text2 = text.substring(selection - 1);//获取光标位置的最后一个字符

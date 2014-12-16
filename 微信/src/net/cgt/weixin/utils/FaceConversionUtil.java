@@ -15,7 +15,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
-import android.util.Log;
 
 /**
  * 表情转换工具
@@ -32,7 +31,7 @@ public class FaceConversionUtil {
 
 	private static FaceConversionUtil mFaceConversionUtil;
 
-	/** 保存于内存中的表情HashMap(key:可爱; value:emoji_1) */
+	/** 保存于内存中的表情HashMap(key:[可爱]; value:emoji_1) */
 	private HashMap<String, String> mMap_emoji = new HashMap<String, String>();
 
 	/** 保存于内存中的表情集合 */
@@ -53,22 +52,23 @@ public class FaceConversionUtil {
 	}
 
 	/**
-	 * 得到一个SpanableString对象，通过传入的字符串,并进行正则判断
+	 * 得到一个SpanableString对象，通过传入的字符串,并进行正则判断<br>
+	 * 将特定字符转换成对应"表情"
 	 * 
-	 * @param context
-	 * @param str
+	 * @param context 上下文
+	 * @param str 要被匹配的字符串
 	 * @return
 	 */
 	public SpannableString getExpressionString(Context context, String str) {
 		SpannableString spannableString = new SpannableString(str);
-		// 正则表达式比配字符串里是否含有表情，如： 我好[开心]啊
+		// 正则表达式匹配字符串里是否含有表情，如： 我好[开心]啊
 		String zhengze = "\\[[^\\]]+\\]";
 		// 通过传入的正则表达式来生成一个pattern
 		Pattern sinaPatten = Pattern.compile(zhengze, Pattern.CASE_INSENSITIVE);
 		try {
 			dealExpression(context, spannableString, sinaPatten, 0);
 		} catch (Exception e) {
-			Log.e("dealExpression", e.getMessage());
+			L.e(LOGTAG, e.getMessage());
 		}
 		return spannableString;
 	}
@@ -76,7 +76,7 @@ public class FaceConversionUtil {
 	/**
 	 * 添加表情
 	 * 
-	 * @param context
+	 * @param context 上下文
 	 * @param imgId
 	 * @param spannableString
 	 * @return
@@ -96,18 +96,18 @@ public class FaceConversionUtil {
 	/**
 	 * 对spanableString进行正则判断，如果符合要求，则以表情图片代替
 	 * 
-	 * @param context
-	 * @param spannableString
-	 * @param patten
-	 * @param start
+	 * @param context 上下文
+	 * @param spannableString 一个SpannableString对象
+	 * @param patten 一个Pattern对象(正则)
+	 * @param start 起始位置
 	 * @throws Exception
 	 */
 	private void dealExpression(Context context, SpannableString spannableString, Pattern patten, int start) throws Exception {
 		Matcher matcher = patten.matcher(spannableString);
-		while (matcher.find()) {
-			String key = matcher.group();
+		while (matcher.find()) {//尝试查找与该模式匹配的输入序列的下一个子序列
+			String key = matcher.group();//返回由以前匹配操作所匹配的输入子序列
 			// 返回第一个字符的索引的文本匹配整个正则表达式,ture 则继续递归
-			if (matcher.start() < start) {
+			if (matcher.start() < start) {//返回以前匹配的初始索引
 				continue;
 			}
 			String value = mMap_emoji.get(key);
@@ -120,7 +120,7 @@ public class FaceConversionUtil {
 			// int resId=Integer.parseInt(field.get(null).toString());
 			if (resId != 0) {
 				Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
-				bitmap = Bitmap.createScaledBitmap(bitmap, 50, 50, true);
+				bitmap = Bitmap.createScaledBitmap(bitmap, DensityUtil.dip2px(context, 48), DensityUtil.dip2px(context, 48), true);
 				// 通过图片资源id来得到bitmap，用一个ImageSpan来包装
 				ImageSpan imageSpan = new ImageSpan(bitmap);
 				// 计算该图片名字的长度，也就是要替换的字符串的长度
