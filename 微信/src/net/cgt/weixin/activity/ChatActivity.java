@@ -1,6 +1,5 @@
 package net.cgt.weixin.activity;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +42,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -51,6 +49,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -160,6 +159,10 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 	 * 震动传感器
 	 */
 	private Vibrator vibrator;
+	/**
+	 * 输入管理器
+	 */
+	private InputMethodManager imm;
 	/**
 	 * 输入框中的文本
 	 */
@@ -317,6 +320,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 	}
 
 	private void initData() {
+		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 		IntentFilter filter = new IntentFilter("net.cgt.weixin.chat");
 		registerReceiver(receiver, filter);// 注册一个广播接收者
@@ -328,6 +332,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 		animationSet.addAnimation(sa);
 		animationSet.setDuration(100);
 		mEt_chat_input.addTextChangedListener(watcher);
+		mEt_chat_input.setOnClickListener(this);
 
 		setSmilingfaceData();
 	}
@@ -473,9 +478,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 			break;
 		case R.id.cgt_btn_chat_smilingface:// 笑脸按钮
 			if (mLl_chat_smilingface_box.getVisibility() == View.VISIBLE) {
+				imm.showSoftInput(mEt_chat_input, 0);
 				mLl_chat_smilingface_box.setVisibility(View.GONE);
+				mBtn_chat_smilingface.setBackgroundResource(R.drawable.cgt_chat_input_smilingface_nor);
 			} else {
+				imm.hideSoftInputFromWindow(mEt_chat_input.getWindowToken(), 0);
 				mLl_chat_smilingface_box.setVisibility(View.VISIBLE);
+				mBtn_chat_smilingface.setBackgroundResource(R.drawable.cgt_chat_input_smilingface_sel);
 			}
 			break;
 		case R.id.cgt_btn_chat_pressToTalk:// 按住说话
@@ -487,6 +496,14 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 		case R.id.cgt_btn_chat_send://发送按钮
 			if (checkValidity()) {
 				sendMsg();
+			}
+			break;
+
+		case R.id.cgt_et_chat_input:// 输入框被点击
+			if (mLl_chat_smilingface_box.getVisibility() == View.VISIBLE) {
+				imm.showSoftInput(mEt_chat_input, 0);
+				mLl_chat_smilingface_box.setVisibility(View.GONE);
+				mBtn_chat_smilingface.setBackgroundResource(R.drawable.cgt_chat_input_smilingface_nor);
 			}
 			break;
 
@@ -565,21 +582,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 			break;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	/**
-	 * 通过反射得到Android的有无物理Menu键<br>
-	 * setOverflowShowingAlways()方法则是屏蔽掉物理Menu键，不然在有物理Menu键的手机上，overflow按钮会显示不出来
-	 */
-	private void setOverflowShowingAlways() {
-		try {
-			ViewConfiguration config = ViewConfiguration.get(this);
-			Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-			menuKeyField.setAccessible(true);
-			menuKeyField.setBoolean(config, false);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override

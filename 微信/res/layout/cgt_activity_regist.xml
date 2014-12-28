@@ -21,10 +21,12 @@
             android:textSize="14sp" />
 
         <EditText
+            android:id="@+id/cgt_et_regist_userName"
             style="@style/cgt_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/text_hint_regist_userName" />
+            android:hint="@string/text_hint_regist_userName"
+            android:textCursorDrawable="@null" />
     </LinearLayout>
 
     <LinearLayout
@@ -43,10 +45,12 @@
             android:textSize="14sp" />
 
         <EditText
+            android:id="@+id/cgt_et_regist_nickName"
             style="@style/cgt_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/text_hint_regist_nickName" />
+            android:hint="@string/text_hint_regist_nickName"
+            android:textCursorDrawable="@null" />
     </LinearLayout>
 
     <LinearLayout
@@ -65,10 +69,14 @@
             android:textSize="14sp" />
 
         <EditText
+            android:id="@+id/cgt_et_regist_pwd"
             style="@style/cgt_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/text_hint_regist_pwd" />
+            android:ems="20"
+            android:hint="@string/text_hint_regist_pwd"
+            android:inputType="textPassword"
+            android:textCursorDrawable="@null" />
     </LinearLayout>
 
     <LinearLayout
@@ -87,13 +95,18 @@
             android:textSize="14sp" />
 
         <EditText
+            android:id="@+id/cgt_et_regist_rpwd"
             style="@style/cgt_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/text_hint_regist_rpwd" />
+            android:ems="20"
+            android:hint="@string/text_hint_regist_rpwd"
+            android:inputType="textPassword"
+            android:textCursorDrawable="@null" />
     </LinearLayout>
 
     <Button
+        android:id="@+id/cgt_btn_regist"
         style="@style/cgt_btn"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dip"

@@ -16,7 +16,11 @@ public interface HandlerTypeUtils {
 	 */
 	public static final int WX_HANDLER_TYPE_LOAD_DATA_FAIL = 11;
 	/**
+	 * 加载数据相同
+	 */
+	public static final int WX_HANDLER_TYPE_LOAD_DATA_SAME = 12;
+	/**
 	 * 网络异常
 	 */
-	public static final int WX_HANDLER_FAIL_HTTP_EXCEPTION = 12;
+	public static final int WX_HANDLER_FAIL_HTTP_EXCEPTION = 13;
 }

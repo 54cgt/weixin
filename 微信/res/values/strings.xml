@@ -19,10 +19,11 @@
     <string name="text_regist_nickName">昵\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020称:</string>
     <string name="text_regist_pwd">密\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020码:</string>
     <string name="text_regist_confirmPwd">确认密码:</string>
+    <string name="text_menu_regist_title">注册</string>
     
     <string name="text_hint_regist_userName">请输入用户名</string>
     <string name="text_hint_regist_nickName">请输入昵称</string>
-    <string name="text_hint_regist_pwd">6-16位数字或字母</string>
+    <string name="text_hint_regist_pwd">6~20位字母、数字、符号</string>
     <string name="text_hint_regist_rpwd">重复密码</string>
     
     <string name="text_login_btn">登\u0020\u0020录</string>
@@ -31,7 +32,7 @@
     <string name="text_login_userName">用户名:</string>
     <string name="text_login_pwd">密\u0020\u0020\u0020\u0020码:</string>
     
-    <string name="text_hint_login_pwd">6-16位数字或字母</string>
+    <string name="text_hint_login_pwd">6~20位字母、数字、符号</string>
     <string name="text_hint_login_userName">手机号/邮箱/昵称</string>
     
     <string name="text_menu_weixin_groupChat">发起群聊</string>

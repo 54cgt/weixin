@@ -30,12 +30,13 @@ import android.widget.EditText;
  * @data 2014-11-21
  */
 public class LoginActivity extends BaseActivity implements OnClickListener {
-	
+
 	private static final String LOGTAG = LogUtil.makeLogTag(LoginActivity.class);
 
 	private EditText mEt_userName;
 	private EditText mEt_password;
 	private Button mBtn_login;
+	private Button mBtn_regist;
 	private SpUtil sp;
 	private Vibrator vibrator;
 
@@ -78,7 +79,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		mEt_userName = (EditText) findViewById(R.id.cgt_et_userName);
 		mEt_password = (EditText) findViewById(R.id.cgt_et_password);
 		mBtn_login = (Button) findViewById(R.id.cgt_btn_login);
+		mBtn_regist = (Button) findViewById(R.id.cgt_btn_regist);
 		mBtn_login.setOnClickListener(this);
+		mBtn_regist.setOnClickListener(this);
 	}
 
 	private void initDate() {
@@ -100,6 +103,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			if (checkValidity()) {
 				submitLogin();
 			}
+			break;
+		case R.id.cgt_btn_regist:
+			startActivity(new Intent(this, RegistActivity.class));
 			break;
 		}
 	}
@@ -146,11 +152,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 			@Override
 			public void run() {
-//				ClientConService ccs = new ClientConService(LoginActivity.this);
-//				boolean b = ccs.login(userName, userPwd);
-				
+				//				ClientConService ccs = new ClientConService(LoginActivity.this);
+				//				boolean b = ccs.login(userName, userPwd);
+
 				boolean b = XmppManager.getInstance().login(userName, userPwd);
-				
+
 				if (b) {
 					handler.sendEmptyMessage(HandlerTypeUtils.WX_HANDLER_TYPE_LOAD_DATA_SUCCESS);
 				} else {

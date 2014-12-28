@@ -64,4 +64,11 @@
         android:layout_marginTop="10dip"
         android:text="@string/text_login_btn" />
 
+    <Button
+        android:id="@+id/cgt_btn_regist"
+        style="@style/cgt_btn"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dip"
+        android:text="@string/text_regist_btn" />
+
 </LinearLayout>
