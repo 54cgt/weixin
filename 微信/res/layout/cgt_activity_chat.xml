@@ -4,23 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ScrollView
-        android:id="@+id/cgt_sv_chat_showBoxScrollView"
+    <ListView
+        android:id="@+id/cgt_lv_chat_showBox"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1.0"
-        android:background="@color/color_ebebeb" >
-
-        <LinearLayout
-            android:id="@+id/cgt_ll_chat_showBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/color_ebebeb"
-            android:orientation="vertical"
-            android:paddingLeft="10dip"
-            android:paddingRight="5dip" >
-        </LinearLayout>
-    </ScrollView>
+        android:background="@color/color_ebebeb"
+        android:cacheColorHint="#0000"
+        android:divider="@null"
+        android:dividerHeight="5dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:stackFromBottom="true" />
 
     <View
         android:layout_width="match_parent"

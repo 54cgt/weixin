@@ -1,17 +1,22 @@
 package net.cgt.weixin.activity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import net.cgt.weixin.R;
 import net.cgt.weixin.domain.ChatEmoji;
+import net.cgt.weixin.domain.ChatMsgEntity;
 import net.cgt.weixin.domain.User;
 import net.cgt.weixin.utils.AppToast;
+import net.cgt.weixin.utils.AppUtil;
 import net.cgt.weixin.utils.DensityUtil;
 import net.cgt.weixin.utils.FaceConversionUtil;
 import net.cgt.weixin.utils.HandlerTypeUtils;
 import net.cgt.weixin.utils.L;
 import net.cgt.weixin.utils.LogUtil;
+import net.cgt.weixin.utils.SystemInfoUtils;
+import net.cgt.weixin.view.adapter.ChatMsgAdapter;
 import net.cgt.weixin.view.adapter.EmojiAdapter;
 import net.cgt.weixin.view.manager.XmppManager;
 import net.cgt.weixin.view.scrollView.MyScrollView;
@@ -30,6 +35,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
@@ -41,7 +47,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -55,13 +60,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
 /**
  * 聊天
@@ -69,7 +72,7 @@ import android.widget.TextView;
  * @author lijian
  * @date 2014-12-04
  */
-public class ChatActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
+public class ChatActivity extends BaseActivity implements OnItemClickListener {
 
 	private static final String LOGTAG = LogUtil.makeLogTag(ChatActivity.class);
 
@@ -79,14 +82,20 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 	 * 聊天用户
 	 */
 	private User user;
-	/**
-	 * 内容显示容器的外置滚动
-	 */
-	private ScrollView mSv_chat_showBoxScrollView;
+
+	//	/**
+	//	 * 内容显示容器的外置滚动
+	//	 */
+	//	private ScrollView mSv_chat_showBoxScrollView;
+	//	/**
+	//	 * 内容显示容器
+	//	 */
+	//	private LinearLayout mLl_chat_showBox;
+
 	/**
 	 * 内容显示容器
 	 */
-	private LinearLayout mLl_chat_showBox;
+	private ListView mLv_chat_showBox;
 	/**
 	 * 语音按钮
 	 */
@@ -171,6 +180,14 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 	 * 发送按钮show动画集
 	 */
 	private AnimationSet animationSet;
+	/**
+	 * 聊天消息实体的集合
+	 */
+	private List<ChatMsgEntity> mList_ChatMsgEntity;
+	/**
+	 * 消息适配器
+	 */
+	private ChatMsgAdapter mAdpt_chatMsg;
 
 	/**
 	 * 表情选择监听
@@ -230,46 +247,93 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 	private void setChatDataOtherParty(Message msg) {
 		Bundle bundle = msg.getData();
 		String body = bundle.getString("body");
-
-		View v = View.inflate(this, R.layout.cgt_layout_chat_dialogbox_otherparty, null);
-		TextView mTv_chat_dialogBox = (TextView) v.findViewById(R.id.cgt_tv_chat_dialogBox_otherparty);
-		ImageView mIv_chat_userImg = (ImageView) v.findViewById(R.id.cgt_iv_chat_userImg_otherparty);
-
-		mIv_chat_userImg.setImageResource(Integer.parseInt(user.getUserPhote()));
-		SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(this, body);
-		mTv_chat_dialogBox.setText(spannableString);
-		mLl_chat_showBox.addView(v);
-
-		setChatWindowToDown();
+		ChatMsgEntity chatMsgEntity = new ChatMsgEntity();
+		
+		// 当前时间
+		long curTime = System.currentTimeMillis();
+		chatMsgEntity.setTime(curTime);
+		if (mList_ChatMsgEntity.size() > 0) {
+			//时间间隔
+			long timeInterval = curTime - mList_ChatMsgEntity.get(mList_ChatMsgEntity.size() - 1).getTime();
+			//5分钟内发送的不显示时间
+			if (timeInterval > 5 * 60 * 1000) {
+				chatMsgEntity.setShowTime(true);
+			} else {
+				chatMsgEntity.setShowTime(false);
+			}
+		} else {
+			chatMsgEntity.setShowTime(true);
+		}
+		
+		chatMsgEntity.setUserImg(Integer.parseInt(user.getUserPhote()));
+		chatMsgEntity.setTextMsg(body);
+		chatMsgEntity.setMsgType(ChatMsgEntity.MSGTYPE_TEXT);
+		chatMsgEntity.setMeMsg(false);
+		mList_ChatMsgEntity.add(chatMsgEntity);
+		mAdpt_chatMsg.notifyDataSetChanged();
+		mLv_chat_showBox.setSelection(mLv_chat_showBox.getCount() - 1);
 	}
 
 	/**
 	 * 设置聊天窗口滚动到最底下
 	 */
-	private void setChatWindowToDown() {
-		handler.post(new Runnable() {
-			@Override
-			public void run() {
-				mSv_chat_showBoxScrollView.fullScroll(ScrollView.FOCUS_DOWN);
-			}
-		});
-	}
+	//	private void setChatWindowToDown() {
+	//		handler.post(new Runnable() {
+	//			@Override
+	//			public void run() {
+	//				mSv_chat_showBoxScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+	//			}
+	//		});
+	//	}
 
 	/**
 	 * 设置我的聊天数据
 	 */
 	private void setChatDataMe() {
 		mEt_chat_input.setText("");
+		ChatMsgEntity chatMsgEntity = new ChatMsgEntity();
+		
+		// 当前时间
+		long curTime = System.currentTimeMillis();
+		chatMsgEntity.setTime(curTime);
+		if (mList_ChatMsgEntity.size() > 0) {
+			//时间间隔
+			long timeInterval = curTime - mList_ChatMsgEntity.get(mList_ChatMsgEntity.size() - 1).getTime();
+			//5分钟内发送的不显示时间
+			if (timeInterval > 5 * 60 * 1000) {
+				chatMsgEntity.setShowTime(true);
+			} else {
+				chatMsgEntity.setShowTime(false);
+			}
+		} else {
+			chatMsgEntity.setShowTime(true);
+		}
 
-		View v = View.inflate(this, R.layout.cgt_layout_chat_dialogbox_me, null);
-		TextView mTv_chat_dialogBox = (TextView) v.findViewById(R.id.cgt_tv_chat_dialogBox_me);
-		ImageView mIv_chat_userImg = (ImageView) v.findViewById(R.id.cgt_iv_chat_userImg_me);
+		chatMsgEntity.setUserImg(R.drawable.user_picture);
+		chatMsgEntity.setTextMsg(msg);
+		chatMsgEntity.setMsgType(ChatMsgEntity.MSGTYPE_TEXT);
+		chatMsgEntity.setMeMsg(true);
+		mList_ChatMsgEntity.add(chatMsgEntity);
+		mAdpt_chatMsg.notifyDataSetChanged();
+		//滚动到最底部：方式一
+		//		mLv_chat_showBox.setSelection(mLv_chat_showBox.getCount() - 1);
+		//滚动到最底部：方式二
+		mLv_chat_showBox.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+	}
 
-		mIv_chat_userImg.setImageResource(R.drawable.user_picture);
-		SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(this, msg);
-		mTv_chat_dialogBox.setText(spannableString);
-		mLl_chat_showBox.addView(v);
-		setChatWindowToDown();
+	private String getDate() {
+		Calendar c = Calendar.getInstance();
+
+		String year = String.valueOf(c.get(Calendar.YEAR));
+		String month = String.valueOf(c.get(Calendar.MONTH));
+		String day = String.valueOf(c.get(Calendar.DAY_OF_MONTH) + 1);
+		String hour = String.valueOf(c.get(Calendar.HOUR_OF_DAY));
+		String mins = String.valueOf(c.get(Calendar.MINUTE));
+
+		StringBuffer sbBuffer = new StringBuffer();
+		sbBuffer.append(year + "-" + month + "-" + day + " " + hour + ":" + mins);
+
+		return sbBuffer.toString();
 	}
 
 	@Override
@@ -296,8 +360,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 		actionBar.setTitle(user.getUserAccount());
 		setOverflowShowingAlways();
 
-		mSv_chat_showBoxScrollView = (ScrollView) findViewById(R.id.cgt_sv_chat_showBoxScrollView);
-		mLl_chat_showBox = (LinearLayout) findViewById(R.id.cgt_ll_chat_showBox);
+		//		mSv_chat_showBoxScrollView = (ScrollView) findViewById(R.id.cgt_sv_chat_showBoxScrollView);
+		//		mLl_chat_showBox = (LinearLayout) findViewById(R.id.cgt_ll_chat_showBox);
+		mLv_chat_showBox = (ListView) findViewById(R.id.cgt_lv_chat_showBox);
 		mBtn_chat_speech = (Button) findViewById(R.id.cgt_btn_chat_speech);
 		mBtn_chat_keyboard = (Button) findViewById(R.id.cgt_btn_chat_keyboard);
 		mLl_chat_inputBox = (LinearLayout) findViewById(R.id.cgt_ll_chat_input_box);
@@ -335,6 +400,10 @@ public class ChatActivity extends BaseActivity implements OnClickListener, OnIte
 		mEt_chat_input.setOnClickListener(this);
 
 		setSmilingfaceData();
+
+		mList_ChatMsgEntity = new ArrayList<ChatMsgEntity>();
+		mAdpt_chatMsg = new ChatMsgAdapter(this, mList_ChatMsgEntity);
+		mLv_chat_showBox.setAdapter(mAdpt_chatMsg);
 	}
 
 	/**
