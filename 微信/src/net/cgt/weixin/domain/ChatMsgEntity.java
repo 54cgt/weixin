@@ -29,6 +29,9 @@ public class ChatMsgEntity {
 	 */
 	public static final int MSGTYPE_VIDEO = 5;
 
+	/** 消息编号 **/
+	private String id;
+
 	/** 消息时间 **/
 	private long time;
 
@@ -59,9 +62,10 @@ public class ChatMsgEntity {
 	public ChatMsgEntity() {
 	}
 
-	public ChatMsgEntity(long time, boolean isShowTime, String userName, int userImg, String textMsg, String imgMsg, String voiceMsg, int msgType, boolean isMeMsg) {
+	public ChatMsgEntity(String id, long time, boolean isShowTime, String userName, int userImg, String textMsg, String imgMsg, String voiceMsg, int msgType, boolean isMeMsg) {
+		this.id = id;
 		this.time = time;
-		this.isMeMsg = isMeMsg;
+		this.isShowTime = isShowTime;
 		this.userName = userName;
 		this.userImg = userImg;
 		this.textMsg = textMsg;
@@ -69,6 +73,14 @@ public class ChatMsgEntity {
 		this.voiceMsg = voiceMsg;
 		this.msgType = msgType;
 		this.isMeMsg = isMeMsg;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public long getTime() {
