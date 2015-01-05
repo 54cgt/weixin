@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import net.cgt.weixin.R;
+import net.cgt.weixin.db.dao.ChatInfoDao;
 import net.cgt.weixin.domain.ChatEmoji;
 import net.cgt.weixin.domain.ChatMsgEntity;
 import net.cgt.weixin.domain.User;
@@ -188,6 +189,10 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 	 * 消息适配器
 	 */
 	private ChatMsgAdapter mAdpt_chatMsg;
+	/**
+	 * 聊天信息数据库
+	 */
+	private ChatInfoDao dao;
 
 	/**
 	 * 表情选择监听
@@ -248,7 +253,7 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 		Bundle bundle = msg.getData();
 		String body = bundle.getString("body");
 		ChatMsgEntity chatMsgEntity = new ChatMsgEntity();
-		
+
 		// 当前时间
 		long curTime = System.currentTimeMillis();
 		chatMsgEntity.setTime(curTime);
@@ -264,11 +269,12 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 		} else {
 			chatMsgEntity.setShowTime(true);
 		}
-		
+
 		chatMsgEntity.setUserImg(Integer.parseInt(user.getUserPhote()));
 		chatMsgEntity.setTextMsg(body);
 		chatMsgEntity.setMsgType(ChatMsgEntity.MSGTYPE_TEXT);
 		chatMsgEntity.setMeMsg(false);
+		dao.add(chatMsgEntity);
 		mList_ChatMsgEntity.add(chatMsgEntity);
 		mAdpt_chatMsg.notifyDataSetChanged();
 		mLv_chat_showBox.setSelection(mLv_chat_showBox.getCount() - 1);
@@ -292,7 +298,7 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 	private void setChatDataMe() {
 		mEt_chat_input.setText("");
 		ChatMsgEntity chatMsgEntity = new ChatMsgEntity();
-		
+
 		// 当前时间
 		long curTime = System.currentTimeMillis();
 		chatMsgEntity.setTime(curTime);
@@ -313,6 +319,7 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 		chatMsgEntity.setTextMsg(msg);
 		chatMsgEntity.setMsgType(ChatMsgEntity.MSGTYPE_TEXT);
 		chatMsgEntity.setMeMsg(true);
+		dao.add(chatMsgEntity);
 		mList_ChatMsgEntity.add(chatMsgEntity);
 		mAdpt_chatMsg.notifyDataSetChanged();
 		//滚动到最底部：方式一
@@ -402,6 +409,9 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 		setSmilingfaceData();
 
 		mList_ChatMsgEntity = new ArrayList<ChatMsgEntity>();
+		dao = new ChatInfoDao(this);
+		List<ChatMsgEntity> findPart = dao.findPart(20, 0);
+		mList_ChatMsgEntity.addAll(findPart);
 		mAdpt_chatMsg = new ChatMsgAdapter(this, mList_ChatMsgEntity);
 		mLv_chat_showBox.setAdapter(mAdpt_chatMsg);
 	}

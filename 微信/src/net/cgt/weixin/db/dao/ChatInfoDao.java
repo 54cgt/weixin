@@ -121,7 +121,7 @@ public class ChatInfoDao {
 			} else {
 				entity.setMeMsg(true);
 			}
-			list.add(entity);
+			list.add(0, entity);
 		}
 		cursor.close();
 		db.close();
