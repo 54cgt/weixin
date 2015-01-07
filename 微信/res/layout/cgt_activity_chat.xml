@@ -4,17 +4,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/cgt_lv_chat_showBox"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1.0"
-        android:background="@color/color_ebebeb"
-        android:cacheColorHint="#0000"
-        android:divider="@null"
-        android:dividerHeight="5dp"
-        android:scrollbarStyle="outsideOverlay"
-        android:stackFromBottom="true" />
+        android:background="@color/color_ebebeb" >
+
+        <ProgressBar
+            android:id="@+id/cgt_pb_chat_loading"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginTop="5dip"
+            android:visibility="gone" />
+
+        <ListView
+            android:id="@+id/cgt_lv_chat_showBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="#0000"
+            android:divider="@null"
+            android:dividerHeight="5dp"
+            android:scrollbarStyle="outsideOverlay"
+            android:stackFromBottom="true" />
+    </FrameLayout>
 
     <View
         android:layout_width="match_parent"

@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.SystemClock;
 
 /**
  * 聊天信息的增删改查业务类
@@ -76,6 +77,7 @@ public class ChatInfoDao {
 	 * @return
 	 */
 	public List<ChatMsgEntity> findPart(int maxNumber, int startIndex) {
+		SystemClock.sleep(300);
 		SQLiteDatabase db = helper.getWritableDatabase();
 		//select _id,location,areacode from mob_location limit 20,10
 		Cursor cursor = db.rawQuery("select * from info order by _id desc limit ? offset ?", new String[] { String.valueOf(maxNumber), String.valueOf(startIndex) });

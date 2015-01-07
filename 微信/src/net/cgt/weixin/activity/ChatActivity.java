@@ -10,13 +10,11 @@ import net.cgt.weixin.domain.ChatEmoji;
 import net.cgt.weixin.domain.ChatMsgEntity;
 import net.cgt.weixin.domain.User;
 import net.cgt.weixin.utils.AppToast;
-import net.cgt.weixin.utils.AppUtil;
 import net.cgt.weixin.utils.DensityUtil;
 import net.cgt.weixin.utils.FaceConversionUtil;
 import net.cgt.weixin.utils.HandlerTypeUtils;
 import net.cgt.weixin.utils.L;
 import net.cgt.weixin.utils.LogUtil;
-import net.cgt.weixin.utils.SystemInfoUtils;
 import net.cgt.weixin.view.adapter.ChatMsgAdapter;
 import net.cgt.weixin.view.adapter.EmojiAdapter;
 import net.cgt.weixin.view.manager.XmppManager;
@@ -36,7 +34,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
@@ -56,6 +53,8 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -63,6 +62,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -78,6 +78,8 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 	private static final String LOGTAG = LogUtil.makeLogTag(ChatActivity.class);
 
 	protected static final int FLAG_RECEIVER = 100;
+	private static final int CHATMSGENTITY_DATA_EMPTY = 2015010601;
+	private static final int CHATMSGENTITY_DATA_FULL = 2015010602;
 
 	/**
 	 * 聊天用户
@@ -93,6 +95,10 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 	//	 */
 	//	private LinearLayout mLl_chat_showBox;
 
+	/**
+	 * 加载数据等待进度圈
+	 */
+	private ProgressBar mPb_chat_loading;
 	/**
 	 * 内容显示容器
 	 */
@@ -193,6 +199,22 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 	 * 聊天信息数据库
 	 */
 	private ChatInfoDao dao;
+	/**
+	 * 是否正在加载数据中
+	 */
+	private boolean isLoading;
+	/**
+	 * 默认的开始位置
+	 */
+	private int startIndex = 0;
+	/**
+	 * 最多一次返回20条记录
+	 */
+	private int maxNumber = 20;
+	/**
+	 * 查询到的数据条数
+	 */
+	private int findChatMsgCount = 0;
 
 	/**
 	 * 表情选择监听
@@ -237,12 +259,38 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 			case FLAG_RECEIVER:// 收到广播
 				setChatDataOtherParty(msg);
 				break;
+			case CHATMSGENTITY_DATA_FULL:
+				setData();
+				break;
+			case CHATMSGENTITY_DATA_EMPTY:
+				mPb_chat_loading.setVisibility(View.GONE);
+				AppToast.getToast().show("哦买噶,所有数据都被你取完啦...");
+				isLoading = false;
+				break;
 			default:
 				break;
 			}
 			super.handleMessage(msg);
 		}
+
 	};
+
+	/**
+	 * 刷新聊天数据
+	 */
+	private void setData() {
+		mPb_chat_loading.setVisibility(View.GONE);
+		if (mAdpt_chatMsg == null) {
+			mAdpt_chatMsg = new ChatMsgAdapter(ChatActivity.this, mList_ChatMsgEntity);
+			mLv_chat_showBox.setAdapter(mAdpt_chatMsg);
+		} else {
+			mAdpt_chatMsg.notifyDataSetChanged();
+		}
+		isLoading = false;
+		if (findChatMsgCount > 0) {
+			mLv_chat_showBox.setSelection(findChatMsgCount - 1);
+		}
+	}
 
 	/**
 	 * 设置对方聊天数据
@@ -257,7 +305,7 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 		// 当前时间
 		long curTime = System.currentTimeMillis();
 		chatMsgEntity.setTime(curTime);
-		if (mList_ChatMsgEntity.size() > 0) {
+		if (mList_ChatMsgEntity != null && mList_ChatMsgEntity.size() > 0) {
 			//时间间隔
 			long timeInterval = curTime - mList_ChatMsgEntity.get(mList_ChatMsgEntity.size() - 1).getTime();
 			//5分钟内发送的不显示时间
@@ -302,7 +350,7 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 		// 当前时间
 		long curTime = System.currentTimeMillis();
 		chatMsgEntity.setTime(curTime);
-		if (mList_ChatMsgEntity.size() > 0) {
+		if (mList_ChatMsgEntity != null && mList_ChatMsgEntity.size() > 0) {
 			//时间间隔
 			long timeInterval = curTime - mList_ChatMsgEntity.get(mList_ChatMsgEntity.size() - 1).getTime();
 			//5分钟内发送的不显示时间
@@ -370,6 +418,7 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 		//		mSv_chat_showBoxScrollView = (ScrollView) findViewById(R.id.cgt_sv_chat_showBoxScrollView);
 		//		mLl_chat_showBox = (LinearLayout) findViewById(R.id.cgt_ll_chat_showBox);
 		mLv_chat_showBox = (ListView) findViewById(R.id.cgt_lv_chat_showBox);
+		mPb_chat_loading = (ProgressBar) findViewById(R.id.cgt_pb_chat_loading);
 		mBtn_chat_speech = (Button) findViewById(R.id.cgt_btn_chat_speech);
 		mBtn_chat_keyboard = (Button) findViewById(R.id.cgt_btn_chat_keyboard);
 		mLl_chat_inputBox = (LinearLayout) findViewById(R.id.cgt_ll_chat_input_box);
@@ -389,6 +438,63 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 		mBtn_chat_pressToTalk.setOnClickListener(this);
 		mBtn_chat_plus.setOnClickListener(this);
 		mBtn_chat_send.setOnClickListener(this);
+		mLv_chat_showBox.setOnScrollListener(new OnScrollListener() {
+			// 当滚动状态发生变化的时候调用的方法。
+			// 静止--》拖动滚动
+			// 拖动--》惯性滑动
+			// 滑动--》静止
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				switch (scrollState) {
+				case OnScrollListener.SCROLL_STATE_IDLE://静止状态
+					int position = mLv_chat_showBox.getFirstVisiblePosition();//获取第一条可见条目在listView集合里面的位置
+					if (position == 0) {
+						if (isLoading) {
+							AppToast.getToast().show("正在加载,请稍候...");
+							return;
+						}
+						startIndex += maxNumber;
+						fillData();
+					}
+					break;
+
+				case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL://触摸滚动状态
+					L.i(LOGTAG, "触摸滚动状态");
+					break;
+				case OnScrollListener.SCROLL_STATE_FLING://惯性滚动状态
+					L.i(LOGTAG, "惯性滚动状态");
+					break;
+				}
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+			}
+		});
+	}
+
+	/**
+	 * 获取并填充聊天数据
+	 */
+	private void fillData() {
+		isLoading = true;
+		mPb_chat_loading.setVisibility(View.VISIBLE);
+		new Thread() {
+			public void run() {
+				List<ChatMsgEntity> list = dao.findPart(maxNumber, startIndex);
+				findChatMsgCount = list.size();
+				if (list.size() != 0) {
+					if (mList_ChatMsgEntity == null) {
+						mList_ChatMsgEntity = list;
+					} else {
+						mList_ChatMsgEntity.addAll(0, list);
+					}
+					handler.sendEmptyMessage(CHATMSGENTITY_DATA_FULL);
+				} else {
+					handler.sendEmptyMessage(CHATMSGENTITY_DATA_EMPTY);
+				}
+			};
+		}.start();
 	}
 
 	private void initData() {
@@ -410,10 +516,13 @@ public class ChatActivity extends BaseActivity implements OnItemClickListener {
 
 		mList_ChatMsgEntity = new ArrayList<ChatMsgEntity>();
 		dao = new ChatInfoDao(this);
-		List<ChatMsgEntity> findPart = dao.findPart(20, 0);
-		mList_ChatMsgEntity.addAll(findPart);
-		mAdpt_chatMsg = new ChatMsgAdapter(this, mList_ChatMsgEntity);
-		mLv_chat_showBox.setAdapter(mAdpt_chatMsg);
+
+		fillData();
+
+		//		List<ChatMsgEntity> findPart = dao.findPart(maxNumber, startIndex);
+		//		mList_ChatMsgEntity.addAll(findPart);
+		//		mAdpt_chatMsg = new ChatMsgAdapter(this, mList_ChatMsgEntity);
+		//		mLv_chat_showBox.setAdapter(mAdpt_chatMsg);
 	}
 
 	/**
