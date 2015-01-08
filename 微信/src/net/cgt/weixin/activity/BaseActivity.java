@@ -15,7 +15,7 @@ import android.view.View.OnClickListener;
  * Activity的基类
  * 
  * @author lijian
- * 
+ * @data 2015-01-08 22:03:31
  */
 public class BaseActivity extends Activity implements OnClickListener {
 
