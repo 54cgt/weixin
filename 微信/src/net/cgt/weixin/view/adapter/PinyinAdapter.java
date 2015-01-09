@@ -180,7 +180,12 @@ public class PinyinAdapter extends BaseExpandableListAdapter {
 			}
 		} else {
 			mTv_userName.setText(mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, childPosition).getUserAccount());
-			mIv_userPhoto.setImageResource(Integer.parseInt(mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, childPosition).getUserPhote()));
+			String userPhote = mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, childPosition).getUserPhote();
+			if (userPhote == null) {
+				mIv_userPhoto.setImageResource(R.drawable.user_picture);
+			} else {
+				mIv_userPhoto.setImageResource(Integer.parseInt(mAssortPinyinList.getHashList().getValueThroughIndexAndKey(groupPosition, childPosition).getUserPhote()));
+			}
 		}
 		if (isLastChild) {
 			mV_line.setVisibility(View.GONE);
@@ -190,7 +195,7 @@ public class PinyinAdapter extends BaseExpandableListAdapter {
 
 		convertView.setTag(R.id.cgt_tv_addressbook_content, groupPosition);
 		convertView.setTag(R.id.cgt_tv_addressbook_group_item, childPosition);
-		
+
 		return convertView;
 	}
 

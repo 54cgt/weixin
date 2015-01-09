@@ -32,6 +32,7 @@ import java.util.Properties;
 
 import net.cgt.weixin.Constants;
 import net.cgt.weixin.GlobalParams;
+import net.cgt.weixin.R;
 import net.cgt.weixin.domain.FriendRooms;
 import net.cgt.weixin.domain.MucHistory;
 import net.cgt.weixin.domain.User;
@@ -113,7 +114,7 @@ public class XmppManager {
 	private XMPPConnection connection;
 
 	private static XmppManager xmppManager;
-	
+
 	/** 聊天监听器 **/
 	private TaxiChatManagerListener chatManagerListener;
 
@@ -275,12 +276,13 @@ public class XmppManager {
 			}
 		}
 	}
-	
+
 	/**
 	 * 获取一个聊天监听器
+	 * 
 	 * @return
 	 */
-	public TaxiChatManagerListener getChatManagerListener(){
+	public TaxiChatManagerListener getChatManagerListener() {
 		return this.chatManagerListener;
 	}
 
@@ -312,20 +314,20 @@ public class XmppManager {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 登出
 	 * 
 	 * @return
 	 */
-	public boolean logout(){
+	public boolean logout() {
 		// 添加监听，最好是放在登录方法中，在关闭连接方法中，移除监听，原因是为了避免重复添加监听，接受重复消息
 		// 退出程序应该关闭连接，移除监听，该监听可以接受所有好友的消息，很方便吧~
 		getConnection().getChatManager().removeChatListener(chatManagerListener);
-		
+
 		//退出登录
 		getConnection().disconnect();
-		
+
 		if (isConnected()) {
 			return true;
 		}
@@ -500,6 +502,31 @@ public class XmppManager {
 			entriesList.add(i.next());
 		}
 		return entriesList;
+	}
+
+	/**
+	 * 获取所有好友信息
+	 * 
+	 * @param roster
+	 * @return
+	 */
+	public List<User> getAllUser(Roster roster) {
+		List<User> mList_user = new ArrayList<User>();
+		Collection<RosterEntry> entries = roster.getEntries();
+		Iterator<RosterEntry> iterator = entries.iterator();
+		while (iterator.hasNext()) {
+			RosterEntry entry = iterator.next();
+			User user = new User();
+			user.setUserAccount(entry.getName());
+			user.setUserPhote(String.valueOf(R.drawable.user_picture));
+//			user.setUserImage(getUserImage(entry.getName()));
+			mList_user.add(user);
+			L.i(LOGTAG, "------获取好友-getAllUser----------------------");
+			L.i(LOGTAG, "getAllUser-getName-->" + entry.getName());
+			L.i(LOGTAG, "getAllUser-getUser-->" + entry.getUser());
+			L.i(LOGTAG, "getAllUser-getStatus-->" + entry.getStatus());
+		}
+		return mList_user;
 	}
 
 	/**
@@ -951,7 +978,6 @@ public class XmppManager {
 	//	首先要获取一个聊天窗口，getConnection()为获取连接connection的方法，调用getFriendChat()获取
 
 	private Map<String, Chat> chatManage = new HashMap<String, Chat>();// 聊天窗口管理map集合
-
 
 	/**
 	 * 获取或创建聊天窗口

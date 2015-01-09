@@ -1,5 +1,6 @@
 package net.cgt.weixin.domain;
 
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -14,6 +15,7 @@ public class User implements Parcelable {
 	private String userAccount;
 	private String personalizedSignature;
 	private String date;
+	private Drawable userImage;
 
 	public String getUserPhote() {
 		return userPhote;
@@ -47,6 +49,14 @@ public class User implements Parcelable {
 		this.date = date;
 	}
 
+	public Drawable getUserImage() {
+		return userImage;
+	}
+
+	public void setUserImage(Drawable userImage) {
+		this.userImage = userImage;
+	}
+
 	@Override
 	public int describeContents() {
 		return 0;
@@ -58,6 +68,7 @@ public class User implements Parcelable {
 		dest.writeString(userAccount);
 		dest.writeString(date);
 		dest.writeString(personalizedSignature);
+		dest.writeValue(userImage);
 	}
 
 	public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
@@ -89,5 +100,7 @@ public class User implements Parcelable {
 		userAccount = in.readString();
 		date = in.readString();
 		personalizedSignature = in.readString();
+		ClassLoader Drawable = ClassLoader.getSystemClassLoader();
+		userImage = (android.graphics.drawable.Drawable) in.readValue(Drawable);
 	}
 }
