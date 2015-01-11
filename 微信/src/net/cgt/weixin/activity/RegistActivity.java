@@ -66,7 +66,7 @@ public class RegistActivity extends BaseActivity {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			switch (msg.what) {
-			case HandlerTypeUtils.WX_HANDLER_FAIL_HTTP_EXCEPTION:
+			case HandlerTypeUtils.WX_HANDLER_HTTP_EXCEPTION:
 				AppToast.getToast().show("网络异常");
 				break;
 			case HandlerTypeUtils.WX_HANDLER_TYPE_LOAD_DATA_SUCCESS:
@@ -216,7 +216,7 @@ public class RegistActivity extends BaseActivity {
 			public void run() {
 				String result = XmppManager.getInstance().regist(userName, userPwd);
 				if (result.equals("0")) {// 0、 服务器没有返回结果
-					handler.sendEmptyMessage(HandlerTypeUtils.WX_HANDLER_FAIL_HTTP_EXCEPTION);
+					handler.sendEmptyMessage(HandlerTypeUtils.WX_HANDLER_HTTP_EXCEPTION);
 				} else if (result.equals("1")) {// 1、注册成功 
 					handler.sendEmptyMessage(HandlerTypeUtils.WX_HANDLER_TYPE_LOAD_DATA_SUCCESS);
 				} else if (result.equals("2")) {// 2、这个帐号已经存在 

@@ -149,7 +149,7 @@
         android:scrollbars="none" />
 
     <net.cgt.weixin.view.pinyin.AssortView
-        android:id="@+id/cgt_av_addressbook_right"
+        android:id="@+id/cgt_v_addressbook_right"
         android:layout_width="30dip"
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"

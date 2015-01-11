@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- 全局通用 -->
     <string name="app_name">微信</string>
+    <!-- 联网提示 -->
+    <string name="text_NetProgressDialogMsg">加载中……</string>
+    <string name="text_NetRequest_dataError">网络异常!</string>
+    <string name="text_NetRequest_dataEmpty">数据为空!</string>
+
+    <!-- 微博 -->
     <string name="text_menu_finish">退出</string>
     <string name="text_menu_account_manager">账号管理</string>
     <string name="text_menu_settings">设置</string>
@@ -10,37 +17,39 @@
     <string name="text_menu_night_close">日间模式</string>
     <string name="text_menu_more">更多</string>
 
+    <!-- 微信全局Tab -->
     <string name="text_tabbar_weixin">微信</string>
     <string name="text_tabbar_addressbook">通讯录</string>
     <string name="text_tabbar_find">发现</string>
     <string name="text_tabbar_me">我</string>
-    
+
+    <!-- 注册 -->
     <string name="text_regist_userName">登\u0020\u0020录\u0020\u0020名:</string>
     <string name="text_regist_nickName">昵\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020称:</string>
     <string name="text_regist_pwd">密\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020码:</string>
     <string name="text_regist_confirmPwd">确认密码:</string>
     <string name="text_menu_regist_title">注册</string>
-    
     <string name="text_hint_regist_userName">请输入用户名</string>
     <string name="text_hint_regist_nickName">请输入昵称</string>
     <string name="text_hint_regist_pwd">6~20位字母、数字、符号</string>
     <string name="text_hint_regist_rpwd">重复密码</string>
-    
+
+    <!-- 登陆 -->
     <string name="text_login_btn">登\u0020\u0020录</string>
     <string name="text_regist_btn">注\u0020\u0020册</string>
-    
     <string name="text_login_userName">用户名:</string>
     <string name="text_login_pwd">密\u0020\u0020\u0020\u0020码:</string>
-    
     <string name="text_hint_login_pwd">6~20位字母、数字、符号</string>
     <string name="text_hint_login_userName">手机号/邮箱/昵称</string>
-    
+
+    <!-- 微信、通讯录、发现、我_右上角的menu -->
     <string name="text_menu_weixin_groupChat">发起群聊</string>
     <string name="text_menu_weixin_addFriend">添加朋友</string>
     <string name="text_menu_weixin_sweep">扫一扫</string>
     <string name="text_menu_weixin_feedback">意见反馈</string>
     <string name="text_menu_weixin_search">搜索</string>
-    
+
+    <!-- 好友详细资料页面_右上角的menu -->
     <string name="text_menu_userDetailedInfo_title">详细资料</string>
     <string name="text_menu_userDetailedInfo_pencil">设置备注及标签</string>
     <string name="text_menu_userDetailedInfo_stars">标为星标朋友</string>
@@ -49,7 +58,8 @@
     <string name="text_menu_userDetailedInfo_blacklist">加入黑名单</string>
     <string name="text_menu_userDetailedInfo_delete">删除</string>
     <string name="text_menu_userDetailedInfo_addTodesktop">添加到桌面</string>
-    
+
+    <!-- 发现的主界面 -->
     <string name="text_find_friends">朋友圈</string>
     <string name="text_find_sweep">扫一扫</string>
     <string name="text_find_shake">摇一摇</string>
@@ -57,21 +67,24 @@
     <string name="text_find_driftBottle">漂流瓶</string>
     <string name="text_find_shopping">购物</string>
     <string name="text_find_game">游戏</string>
-    
+
+    <!-- 我的主界面 -->
     <string name="text_me_photo">相册</string>
     <string name="text_me_collect">收藏</string>
     <string name="text_me_wallet">钱包</string>
     <string name="text_me_set">设置</string>
-    
+
+    <!-- 通讯录的主界面 -->
     <string name="text_addressbook_newFriend">新的朋友</string>
     <string name="text_addressbook_groupChat">群聊</string>
     <string name="text_addressbook_mark">标签</string>
     <string name="text_addressbook_publicNumber">公众号</string>
-    
+
+    <!-- chat界面 -->
     <string name="text_menu_chatInfo">聊天信息</string>
     <string name="text_chat_pressToTalk">按住\u0020\u0020\u0020\u0020说话</string>
     <string name="text_chat_loosenTheEnd">松开\u0020\u0020\u0020\u0020结束</string>
     <string name="text_chat_releaseFinger_cancelingSend">松开手指，取消发送</string>
     <string name="text_chat_fingerSliding_cancelingSend">手指上滑，取消发送</string>
-    
+
 </resources>

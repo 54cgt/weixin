@@ -1,9 +1,10 @@
 package net.cgt.weixin.fragment;
 
+import http.common.SchemaDef;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import net.cgt.weixin.GlobalParams;
 import net.cgt.weixin.R;
 import net.cgt.weixin.activity.UserDetailedInfoActivity;
 import net.cgt.weixin.domain.User;
@@ -21,7 +22,6 @@ import org.jivesoftware.smack.Roster;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.view.Display;
 import android.view.Gravity;
@@ -48,37 +48,81 @@ public class AddressBookFragment extends BaseFragment implements OnItemLongClick
 
 	private static final String LOGTAG = LogUtil.makeLogTag(AddressBookFragment.class);
 
+	/**
+	 * 可扩展的ListView
+	 */
 	private ExpandableListView mElv_addressbook;
-
-	private AssortView mAv_addressbook_right;
-	private PinyinAdapter adapter;
+	/**
+	 * 右侧拼音导航
+	 */
+	private AssortView mV_addressbook_right;
+	/**
+	 * 可扩展ListView的适配器
+	 */
+	private PinyinAdapter mAdpt_pingyin;
+	/**
+	 * 泡泡
+	 */
 	private PopupWindow popupWindow;
-
-	private List<User> mList;
+	/**
+	 * 用户信息集合
+	 */
 	private List<User> mList_user;
-
-	private Handler mHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case HandlerTypeUtils.WX_HANDLER_TYPE_LOAD_DATA_SUCCESS:
-				if (adapter == null) {
-					adapter = new PinyinAdapter(GlobalParams.activity, mList_user);
-				} else {
-					adapter.notifyDataSetChanged();
-				}
-				break;
-
-			default:
-				break;
-			}
-		};
-	};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.cgt_fragment_addressbook, null);
 		init(v);
 		return v;
+	}
+
+	@Override
+	protected void requset(int schemaDef) {
+		switch (schemaDef) {
+		case SchemaDef.PULL_ALL_FRIENDS:
+			pullAllFriends();
+			break;
+		}
+	}
+
+	/**
+	 * 拉取所有好友信息
+	 */
+	private void pullAllFriends() {
+		Roster roster = XmppManager.getInstance().getConnection().getRoster();
+		List<User> list = XmppManager.getInstance().getAllUser(roster);
+		if (list.size() == 0) {
+			mHandler.sendEmptyMessage(HandlerTypeUtils.WX_HANDLER_TYPE_LOAD_DATA_EMPTY);
+		} else {
+			//			if (list.get(0).getUserAccount() == mList_user.get(0).getUserAccount()) {
+			//				mHandler.sendEmptyMessage(HandlerTypeUtils.WX_HANDLER_TYPE_LOAD_DATA_SAME);
+			//			} else {
+			mList_user.addAll(list);
+			mHandler.sendEmptyMessage(HandlerTypeUtils.WX_HANDLER_TYPE_LOAD_DATA_SUCCESS);
+			//			}
+		}
+	}
+
+	@Override
+	protected void parseMessage(Message msg) {
+		switch (msg.what) {
+		case HandlerTypeUtils.WX_HANDLER_TYPE_LOAD_DATA_SUCCESS:
+			setData();
+			break;
+		case HandlerTypeUtils.WX_HANDLER_TYPE_LOAD_DATA_EMPTY:
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	private void setData() {
+		if (mAdpt_pingyin == null) {
+			mAdpt_pingyin = new PinyinAdapter(getActivity(), mList_user);
+		} else {
+			mAdpt_pingyin.notifyDataSetChanged();
+		}
 	}
 
 	private void init(View v) {
@@ -88,46 +132,17 @@ public class AddressBookFragment extends BaseFragment implements OnItemLongClick
 
 	private void initView(View v) {
 		mElv_addressbook = (ExpandableListView) v.findViewById(R.id.cgt_elv_addressbook);
-		mAv_addressbook_right = (AssortView) v.findViewById(R.id.cgt_av_addressbook_right);
+		mV_addressbook_right = (AssortView) v.findViewById(R.id.cgt_v_addressbook_right);
 
 		mElv_addressbook.setOnItemLongClickListener(this);
 		mElv_addressbook.setOnChildClickListener(this);
 	}
 
-	//	public void updateRoster() {
-	//		Collection<RosterEntry> entries = roster.getEntries();
-	//		for (RosterEntry entry : entries) {
-	//			System.out.print(entry.getName() + " - " + entry.getUser() + " - " + entry.getType() + " - " + entry.getGroups().size());
-	//			Presence presence = roster.getPresence(entry.getUser());
-	//			System.out.println(" - " + presence.getStatus() + " - " + presence.getFrom());
-	//			User user = new User();
-	//			user.setName(entry.getName());
-	//			user.setUser(entry.getUser());
-	//			user.setType(entry.getType());
-	//			user.setSize(entry.getGroups().size());
-	//			user.setStatus(presence.getStatus());
-	//			user.setFrom(presence.getFrom());
-	//
-	//			userinfos.add(user);
-	//		}
-	//		rosterAdapter.notifyDataSetChanged();
-	//	}
 	private void initData() {
 		if (mList_user == null) {
 			mList_user = new ArrayList<User>();
 		}
-
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				Roster roster = XmppManager.getInstance().getConnection().getRoster();
-				List<User> list = XmppManager.getInstance().getAllUser(roster);
-				if (list.size() != 0) {
-					mList_user.addAll(list);
-					mHandler.sendEmptyMessage(HandlerTypeUtils.WX_HANDLER_TYPE_LOAD_DATA_SUCCESS);
-				}
-			}
-		}).start();
+		requestData(SchemaDef.PULL_ALL_FRIENDS);
 
 		//		ArrayList<String> mItems = new ArrayList<String>();
 		//		mItems.add("admin");
@@ -257,27 +272,27 @@ public class AddressBookFragment extends BaseFragment implements OnItemLongClick
 		mList_user.add(user3);
 		mList_user.add(user4);
 
-		if (adapter == null) {
-			adapter = new PinyinAdapter(GlobalParams.activity, mList_user);
+		if (mAdpt_pingyin == null) {
+			mAdpt_pingyin = new PinyinAdapter(getActivity(), mList_user);
 		} else {
-			adapter.notifyDataSetChanged();
+			mAdpt_pingyin.notifyDataSetChanged();
 		}
-		mElv_addressbook.setAdapter(adapter);
+		mElv_addressbook.setAdapter(mAdpt_pingyin);
 
 		// 展开所有
-		for (int i = 0, length = adapter.getGroupCount(); i < length; i++) {
+		for (int i = 0, length = mAdpt_pingyin.getGroupCount(); i < length; i++) {
 			mElv_addressbook.expandGroup(i);
 		}
 
 		// 字母按键回调
-		mAv_addressbook_right.setOnTouchAssortListener(new OnTouchAssortListener() {
+		mV_addressbook_right.setOnTouchAssortListener(new OnTouchAssortListener() {
 
 			View layoutView = LayoutInflater.from(getActivity()).inflate(R.layout.cgt_layout_addressbook_middle_alert_dialog, null);
 			TextView text = (TextView) layoutView.findViewById(R.id.cgt_tv_addressbook_content);
 
 			@Override
 			public void onTouchAssortListener(String str) {
-				int index = adapter.getAssort().getHashList().indexOfKey(str);
+				int index = mAdpt_pingyin.getAssort().getHashList().indexOfKey(str);
 				if (index != -1) {
 					mElv_addressbook.setSelectedGroup(index);
 				}
@@ -342,10 +357,10 @@ public class AddressBookFragment extends BaseFragment implements OnItemLongClick
 			Intent intent = new Intent();
 			intent.setClass(getActivity(), UserDetailedInfoActivity.class);
 			Bundle bundle = new Bundle();
-			bundle.putParcelable("user", (User) adapter.getChild(groupPosition, childPosition));
+			bundle.putParcelable("user", (User) mAdpt_pingyin.getChild(groupPosition, childPosition));
 			intent.putExtras(bundle);
 			startActivity(intent);
-			AppToast.getToast().show(((User) adapter.getChild(groupPosition, childPosition)).getUserAccount());
+			AppToast.getToast().show(((User) mAdpt_pingyin.getChild(groupPosition, childPosition)).getUserAccount());
 		}
 		return false;
 	}
@@ -357,7 +372,7 @@ public class AddressBookFragment extends BaseFragment implements OnItemLongClick
 		int childPosition = (Integer) view.getTag(R.id.cgt_tv_addressbook_group_item);
 
 		if (childPosition != -1) {
-			String userName = ((User) adapter.getChild(groupPosition, childPosition)).getUserAccount();
+			String userName = ((User) mAdpt_pingyin.getChild(groupPosition, childPosition)).getUserAccount();
 			AppToast.getToast().show(userName);
 
 			final Dialog dialog = new Dialog(getActivity(), R.style.cgt_dialog);
